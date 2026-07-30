@@ -1,6 +1,9 @@
 fastapi
+openai>=2.0,<3.0
 uvicorn[standard]
 pydantic
+pypdf>=5.0,<7.0
+python-dotenv
 python-multipart
 aiofiles
 starlette

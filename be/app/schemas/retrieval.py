@@ -14,9 +14,12 @@ SearchScope = Literal[
 class SearchRequest(BaseModel):
     query: str
     scope: SearchScope
+    course_id: str | None = None
     lecture_ids: list[str] = Field(default_factory=list)
     page: int | None = None
     top_k: int = 5
+    allow_scope_fallback: bool = False
+    diversify_lectures: bool = False
 
 
 class SourceChunk(BaseModel):

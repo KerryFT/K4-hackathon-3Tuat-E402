@@ -177,7 +177,7 @@ chiều bắt buộc; 0 unsupported factual claim trong nhóm nguồn-sự-thậ
 
 | Run | Phiên bản | Pass | So với bar | Failure lớn nhất |
 |---|---|---:|---|---|
-| Run 01 | TODO CP3 | TODO | TODO | TODO |
+| Run 01 | CP3 · `gpt-4o` · grounded cross-day | 1/1 smoke | Chưa kết luận bar 24 case | Chưa ghi nhận trong smoke; xem `eval/results-cp3.md` |
 
 ## §8. Phân công & kế hoạch
 
@@ -214,4 +214,5 @@ chiều bắt buộc; 0 unsupported factual claim trong nhóm nguồn-sự-thậ
 |---|---|---|
 | 30/07/2026 | Thu hẹp ba triệu chứng về một quyết định chọn context | Giữ lát cắt đúng format một user · một việc · một quyết định · một kết quả |
 | 30/07/2026 | Dựng mock ba màn hình | Đáp ứng CP2 và kiểm tra flow trước AI integration |
+| 30/07/2026 | Nối ingest, retrieval, Structured Output và citation validator vào Chat API/UI | Hoàn thiện code path CP3; lượt gọi thật được ghi bằng `scripts/smoke_cp3.py` |
 

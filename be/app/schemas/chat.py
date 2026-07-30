@@ -24,3 +24,11 @@ class ChatResponse(BaseModel):
     scope: str
     citations: list[Citation] = Field(default_factory=list)
     suggested_questions: list[str] = Field(default_factory=list)
+
+
+class GroundedGeneration(BaseModel):
+    """Structured result produced by the LLM before server-side validation."""
+
+    answer: str = Field(min_length=1)
+    citation_source_ids: list[str] = Field(default_factory=list)
+    suggested_questions: list[str] = Field(default_factory=list, max_length=3)
