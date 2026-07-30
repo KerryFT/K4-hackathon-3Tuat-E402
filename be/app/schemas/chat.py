@@ -13,7 +13,7 @@ class LearningContext(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    message: str = Field(min_length=1)
+    message: str = Field(min_length=1, max_length=4000)
     conversation_id: str | None = None
     context: LearningContext = Field(default_factory=LearningContext)
 

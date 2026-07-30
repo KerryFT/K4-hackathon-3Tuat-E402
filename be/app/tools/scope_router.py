@@ -6,7 +6,7 @@ from app.schemas.chat import LearningContext
 def resolve_scope(message: str, context: LearningContext) -> str:
     normalized = message.casefold()
     requested_days = set(re.findall(r"\bday\s*0?(\d+)\b", normalized))
-    if len(requested_days) >= 2:
+    if requested_days:
         return "selected_lectures"
     if any(
         term in normalized

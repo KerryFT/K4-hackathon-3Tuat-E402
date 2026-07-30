@@ -45,5 +45,23 @@ class InMemoryVectorStore:
                 ranked = diverse
             return ranked[: request.top_k]
         if request.allow_scope_fallback:
+            if request.diversify_lectures:
+                grouped: dict[str, list[SourceChunk]] = {}
+                for chunk in scoped:
+                    grouped.setdefault(chunk.lecture_id, []).append(chunk)
+                diversified: list[SourceChunk] = []
+                offset = 0
+                while len(diversified) < request.top_k:
+                    added = False
+                    for lecture_chunks in grouped.values():
+                        if offset < len(lecture_chunks):
+                            diversified.append(lecture_chunks[offset])
+                            added = True
+                            if len(diversified) == request.top_k:
+                                break
+                    if not added:
+                        break
+                    offset += 1
+                return diversified
             return scoped[: request.top_k]
         return []

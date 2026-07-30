@@ -25,6 +25,15 @@ class ScopeRouterTests(unittest.TestCase):
             "selected_lectures",
         )
 
+    def test_one_explicit_day_uses_selected_lecture(self) -> None:
+        self.assertEqual(
+            resolve_scope(
+                "Tóm tắt Day 1",
+                LearningContext(),
+            ),
+            "selected_lectures",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,1 +1,0 @@
-"""Day-scoped transcript agent."""

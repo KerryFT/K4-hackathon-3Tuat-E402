@@ -4,6 +4,14 @@ FastAPI backend cho trợ giảng có căn cứ từ slide. Code được chia t
 nhiệm: HTTP API, application services, agent orchestration, tools, retrieval và
 các provider có thể thay thế.
 
+Đây là runtime agent duy nhất của ứng dụng. Frontend gọi trực tiếp
+`POST /api/v1/chat`; không cần chạy thêm service agent ở cổng khác.
+
+Trước khi vào retrieval/LLM, chat pipeline xử lý cục bộ các intent xã giao như
+`xin chào`, `cảm ơn`, `tạm biệt` và chặn các mẫu prompt injection nhằm ghi đè
+chỉ dẫn hoặc lấy system prompt/secret. Câu hỏi kiến thức về chính chủ đề
+“prompt injection” vẫn được phép đi qua pipeline có citation.
+
 ## Chạy local
 
 ```powershell
