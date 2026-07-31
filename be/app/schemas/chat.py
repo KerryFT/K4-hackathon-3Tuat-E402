@@ -20,7 +20,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
-    status: Literal["answered", "needs_clarification", "not_grounded", "not_configured"]
+    status: Literal["answered", "needs_clarification", "not_grounded", "not_configured", "out_of_scope"]
     scope: str
     citations: list[Citation] = Field(default_factory=list)
     suggested_questions: list[str] = Field(default_factory=list)

@@ -7,18 +7,22 @@ from dotenv import load_dotenv
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(BACKEND_DIR / ".env")
+load_dotenv(BACKEND_DIR.parent / ".env")
+
+_api_key = os.getenv("OPENAI_API_KEY", "").strip()
+_default_provider = "openai" if _api_key else os.getenv("LLM_PROVIDER", "mock")
 
 
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "VLearn Context Tutor"
     environment: str = os.getenv("APP_ENV", "development")
-    llm_provider: str = os.getenv("LLM_PROVIDER", "mock")
+    llm_provider: str = os.getenv("LLM_PROVIDER", _default_provider)
     openai_api_key: str = field(
-        default=os.getenv("OPENAI_API_KEY", ""),
+        default=_api_key,
         repr=False,
     )
-    openai_model: str = os.getenv("OPENAI_MODEL", "gpt-5.6-sol")
+    openai_model: str = os.getenv("OPENAI_MODEL", "gpt-4o")
     openai_reasoning_effort: str = os.getenv("OPENAI_REASONING_EFFORT", "low")
     context_token_budget: int = int(os.getenv("CONTEXT_TOKEN_BUDGET", "6000"))
     retrieval_top_k: int = int(os.getenv("RETRIEVAL_TOP_K", "5"))

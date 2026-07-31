@@ -167,7 +167,7 @@ class TutorAgentTests(unittest.TestCase):
 
         self.assertEqual(response.status, "not_grounded")
         self.assertEqual(response.citations, [])
-        self.assertIn("citation không hợp lệ", response.answer)
+        self.assertIn("trích dẫn hợp lệ", response.answer)
 
     def test_cross_day_answer_requires_and_returns_both_lectures(self) -> None:
         llm = FakeGroundedLLM(["day-01:2:0", "day-02:4:0"])
@@ -223,6 +223,19 @@ class TutorAgentTests(unittest.TestCase):
         response = agent.run(ChatRequest(message="Giải thích problem statement"))
 
         self.assertEqual(response.status, "not_configured")
+
+    def test_off_topic_query_blocked_by_guardrail(self) -> None:
+        llm = FakeGroundedLLM(["day-01:2:0"])
+        agent = TutorAgent(search_engine=make_search_engine(), llm=llm)
+
+        response = agent.run(ChatRequest(message="Dự báo thời tiết hôm nay thế nào?"))
+
+        self.assertEqual(response.status, "out_of_scope")
+        self.assertEqual(llm.calls, 0)
+        self.assertIn("AI Tutor", response.answer)
+
+
+
 
 
 class FakeResponsesClient:

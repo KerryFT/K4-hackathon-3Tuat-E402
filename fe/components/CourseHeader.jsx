@@ -1,7 +1,10 @@
 'use client'
 import { useApp } from '../context/AppContext'
 
+import { useRouter } from 'next/navigation'
+
 export default function CourseHeader({ info, progressPercent = 0, onStart }) {
+  const router = useRouter()
   const { lang } = useApp()
   const isVi = lang === 'VI'
 
@@ -12,6 +15,11 @@ export default function CourseHeader({ info, progressPercent = 0, onStart }) {
     readDays: isVi ? 'Đã đọc' : 'Read',
     days: isVi ? 'ngày' : 'days',
     startReading: isVi ? 'Bắt đầu đọc' : 'Start Reading',
+  }
+
+  function handleStartReading(e) {
+    if (onStart) onStart(e)
+    router.push('/reader?file=day01_302.pdf&day=01')
   }
 
   return (
@@ -41,8 +49,8 @@ export default function CourseHeader({ info, progressPercent = 0, onStart }) {
           </div>
 
           <button
-            onClick={onStart}
-            className="px-6 py-2.5 bg-[#0B3B60] dark:bg-[#1E3A8A] hover:bg-[#0a3050] dark:hover:bg-[#1e40af] text-white rounded-full font-semibold transition-all shadow-sm"
+            onClick={handleStartReading}
+            className="px-6 py-2.5 bg-[#0B3B60] dark:bg-[#1E3A8A] hover:bg-[#0a3050] dark:hover:bg-[#1e40af] text-white rounded-full font-semibold transition-all shadow-sm hover:shadow"
           >
             {t.startReading}
           </button>

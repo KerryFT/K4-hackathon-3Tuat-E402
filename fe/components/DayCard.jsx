@@ -1,24 +1,15 @@
 "use client"
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useApp } from '../context/AppContext'
 
 // Map of slide files per day – mirrors the data/slides folder
 const SLIDE_FILES = {
   '01': [
-    { name: 'day01_302.pdf', file: '/slides/d1-slide-hackathon.pdf' },
-    { name: 'day01_C401.pdf', file: '/slides/d1-slide-hackathon.pdf' },
+    { name: 'd1-slide-hackathon.pdf', file: '/slides/d1-slide-hackathon.pdf' },
   ],
   '02': [
-    { name: 'day02_slide.pdf', file: '/slides/d2-slide-hackathon.pdf' },
-  ],
-  '03': [
-    { name: 'day03_intro.pdf', file: '/slides/d2-slide-hackathon.pdf' },
-    { name: 'day03_practice.pdf', file: '/slides/d2-slide-hackathon.pdf' },
-  ],
-  '04': [
-    { name: 'day04_theory.pdf', file: '/slides/d1-slide-hackathon.pdf' },
-    { name: 'day04_lab.pdf', file: '/slides/d2-slide-hackathon.pdf' },
-    { name: 'day04_review.pdf', file: '/slides/d1-slide-hackathon.pdf' },
+    { name: 'd2-slide-hackathon.pdf', file: '/slides/d2-slide-hackathon.pdf' },
   ],
 }
 
@@ -42,7 +33,8 @@ function FileIcon() {
 }
 
 export default function DayCard({ day, onToggle }){
-  const [open, setOpen] = useState(false)
+  const router = useRouter()
+  const [open, setOpen] = useState(day.seq === '01' || day.seq === '1')
   const { lang } = useApp()
   const isVi = lang === 'VI'
 
@@ -65,6 +57,10 @@ export default function DayCard({ day, onToggle }){
     link.href = slide.file
     link.download = slide.name
     link.click()
+  }
+
+  function handleOpenFile(slide) {
+    router.push(`/reader?file=${slide.name}&day=${day.seq}`)
   }
 
   return (
@@ -107,13 +103,14 @@ export default function DayCard({ day, onToggle }){
           {slides.map((slide, i) => (
             <div
               key={i}
-              className="flex items-center justify-between px-6 py-3 group hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+              onClick={() => handleOpenFile(slide)}
+              className="flex items-center justify-between px-6 py-3.5 group hover:bg-blue-50/60 dark:hover:bg-slate-800/80 transition-all cursor-pointer border-l-4 border-transparent hover:border-[#0B3B60] dark:hover:border-[#38BDF8]"
               style={{ borderBottom: i < slides.length - 1 ? '1px solid var(--tw-border-slate)' : 'none' }}
             >
               {/* File info */}
               <div className="flex items-center gap-3">
                 <FileIcon />
-                <span className="text-sm text-slate-700 dark:text-slate-300">{slide.name}</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover:text-[#0B3B60] dark:group-hover:text-[#38BDF8] transition-colors">{slide.name}</span>
               </div>
 
               {/* Download button */}
@@ -130,6 +127,7 @@ export default function DayCard({ day, onToggle }){
               </button>
             </div>
           ))}
+
 
           {/* Download all button */}
           <div className="px-6 py-3 border-t border-slate-100 dark:border-slate-800">

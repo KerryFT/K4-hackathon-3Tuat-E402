@@ -1,5 +1,6 @@
 'use client';
 import Header from '../../components/Header'
+import FormattedChatMessage from '../../components/FormattedChatMessage'
 import { useEffect, useState, useRef } from 'react'
 import { getCourseInfo, getCourseDays, sendChatMessage } from '../../utils/api'
 import { useApp } from '../../context/AppContext'
@@ -330,7 +331,7 @@ export default function NotebookPage() {
                       ? 'bg-gradient-to-r from-[#0B3B60] to-[#1565A8] dark:from-[#1E3A8A] dark:to-[#3B82F6] text-white'
                       : 'bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700/60 text-slate-800 dark:text-slate-100'
                   }`}>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                    <FormattedChatMessage content={msg.content} isUser={msg.role === 'user'} />
                     {msg.role !== 'user' && msg.citations?.length > 0 && (
                       <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 space-y-1.5">
                         <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">
