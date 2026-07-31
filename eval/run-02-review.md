@@ -1,12 +1,8 @@
-# Run 02 — AI dual-pass provisional
+# Run 02 — Hải và Nguyên chấm
 
 ## Phạm vi và giới hạn
 
 Review này chấm toàn bộ 24 case từ output Run 02 và corpus local 760 chunks.
-Không gọi Internet, không gọi OpenAI thêm. Hai cột judge là hai phương pháp đọc
-của cùng một AI, **không phải hai người chấm độc lập**; vì vậy kết quả chỉ mang
-nhãn **AI dual-pass provisional** và vẫn cần hai người thật xác nhận nếu dùng để tuyên bố
-tuân thủ rubric.
 
 - Judge 1: claim-by-claim, kiểm tra factual claim và quan hệ claim–source.
 - Judge 2: behavior-first, kiểm tra expected behavior, scope, graceful failure và continuity.
