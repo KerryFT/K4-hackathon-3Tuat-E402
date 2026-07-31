@@ -206,6 +206,7 @@ export default function SlideReaderPage() {
 
   // AI Tutor drawer state
   const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
+  const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -216,6 +217,13 @@ export default function SlideReaderPage() {
   ]);
   const [inputMsg, setInputMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Auto scroll chat to bottom when new messages arrive or loading state changes
+  useEffect(() => {
+    if (aiDrawerOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isLoading, aiDrawerOpen]);
 
   const maxPages = activeFile.pages || 29;
 
@@ -320,15 +328,13 @@ export default function SlideReaderPage() {
     }, 180);
   }
 
-  async function handleSendAiChat(e) {
-    e.preventDefault();
-    if (!inputMsg.trim() || isLoading) return;
+  async function handleSendQuestionText(questionText) {
+    if (!questionText || isLoading) return;
 
-    const userText = inputMsg.trim();
     const userMsgObj = {
       id: Date.now(),
       sender: 'user',
-      text: userText,
+      text: questionText,
       time: new Date().toLocaleTimeString(isVi ? 'vi-VN' : 'en-US', { hour: '2-digit', minute: '2-digit' })
     };
 
@@ -338,7 +344,7 @@ export default function SlideReaderPage() {
 
     try {
       const response = await sendChatMessage({
-        message: userText,
+        message: questionText,
         context: {
           course_id: 'comp2010-phase-1',
           current_lecture_id: activeFile.name.includes('d1') ? 'day-01' : 'day-02',
@@ -351,6 +357,7 @@ export default function SlideReaderPage() {
         sender: 'ai',
         text: response.answer,
         citations: response.citations || [],
+        suggestedQuestions: response.suggested_questions || [],
         time: new Date().toLocaleTimeString(isVi ? 'vi-VN' : 'en-US', { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, aiMsgObj]);
@@ -367,6 +374,12 @@ export default function SlideReaderPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  async function handleSendAiChat(e) {
+    e.preventDefault();
+    if (!inputMsg.trim() || isLoading) return;
+    await handleSendQuestionText(inputMsg.trim());
   }
 
   return (
@@ -815,15 +828,45 @@ export default function SlideReaderPage() {
                     }`}
                   >
                     <FormattedChatMessage content={msg.text} isUser={msg.sender === 'user'} />
+
+                    {msg.sender === 'ai' && msg.citations?.length > 0 && (
+                      <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700 space-y-1 text-[11px]">
+                        <div className="font-bold text-slate-600 dark:text-slate-400">📍 Trích dẫn slide:</div>
+                        {msg.citations.map((c, i) => (
+                          <div key={i} className="text-[#0B3B60] dark:text-[#38BDF8]">
+                            • {c.lecture_title} (Trang {c.page ?? '?'})
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {msg.sender === 'ai' && msg.suggestedQuestions?.length > 0 && (
+                      <div className="mt-3 pt-2 border-t border-slate-200 dark:border-slate-700 space-y-1.5">
+                        <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">💡 Gợi ý câu hỏi tiếp theo:</div>
+                        <div className="flex flex-col gap-1">
+                          {msg.suggestedQuestions.map((q, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => handleSendQuestionText(q)}
+                              className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-blue-50 dark:bg-slate-700/60 text-[#0B3B60] dark:text-[#38BDF8] hover:bg-blue-100 dark:hover:bg-slate-700 transition-colors border border-blue-100 dark:border-slate-600 font-medium cursor-pointer"
+                            >
+                              💬 {q}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <span className="text-[9px] text-slate-400 mt-1 px-1">{msg.time}</span>
                 </div>
               ))}
               {isLoading && (
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="flex items-center gap-2 text-xs text-slate-400 p-2">
                   <span className="animate-spin">⏳</span> {t.thinking}
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Chat Input */}

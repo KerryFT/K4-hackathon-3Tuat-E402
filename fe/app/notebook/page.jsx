@@ -82,11 +82,9 @@ export default function NotebookPage() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatMessages, isTyping])
 
-  async function handleSendMessage(e) {
-    e?.preventDefault()
-    if (!chatInput.trim()) return
+  async function sendQuestion(message) {
+    if (!message || isTyping) return
 
-    const message = chatInput.trim()
     const userMsg = {
       id: Date.now(),
       role: 'user',
@@ -119,6 +117,12 @@ export default function NotebookPage() {
     } finally {
       setIsTyping(false)
     }
+  }
+
+  async function handleSendMessage(e) {
+    e?.preventDefault()
+    if (!chatInput.trim()) return
+    await sendQuestion(chatInput.trim())
   }
 
   function clearChat() {
@@ -347,6 +351,25 @@ export default function NotebookPage() {
                             )}
                           </div>
                         ))}
+                      </div>
+                    )}
+                    {msg.role !== 'user' && msg.suggestedQuestions?.length > 0 && (
+                      <div className="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700 space-y-1.5">
+                        <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                          {isVi ? '💡 Gợi ý câu hỏi tiếp theo:' : '💡 Suggested follow-ups:'}
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          {msg.suggestedQuestions.map((q, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => sendQuestion(q)}
+                              className="text-left text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-slate-700 text-[#0B3B60] dark:text-[#38BDF8] hover:bg-blue-50 dark:hover:bg-slate-650 transition-colors border border-slate-200 dark:border-slate-600 font-medium cursor-pointer"
+                            >
+                              💬 {q}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
                     {msg.role !== 'user' && msg.status && (

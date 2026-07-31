@@ -4,8 +4,20 @@ from app.retrieval.filters import is_in_scope
 from app.schemas.retrieval import SearchRequest, SourceChunk
 
 
-def _terms(text: str) -> set[str]:
-    return set(re.findall(r"\w+", text.casefold(), flags=re.UNICODE))
+VI_EN_STOP_WORDS = {
+    "cho", "mình", "tôi", "bạn", "hỏi", "về", "là", "gì", "như", "thế", "nào",
+    "có", "thể", "giúp", "nêu", "rõ", "trong", "bài", "slide", "được", "không",
+    "với", "của", "và", "những", "các", "nào", "mấy", "ra", "sao",
+    "please", "tell", "me", "about", "what", "is", "are", "the", "in", "for", "how"
+}
+
+
+def _terms(text: str, filter_stop_words: bool = False) -> set[str]:
+    raw_terms = set(re.findall(r"\w+", text.casefold(), flags=re.UNICODE))
+    if filter_stop_words:
+        filtered = {t for t in raw_terms if t not in VI_EN_STOP_WORDS and not t.isdigit()}
+        return filtered if filtered else raw_terms
+    return raw_terms
 
 
 class InMemoryVectorStore:
@@ -18,17 +30,30 @@ class InMemoryVectorStore:
         self._chunks.extend(chunks)
 
     def search(self, request: SearchRequest) -> list[SourceChunk]:
-        query_terms = _terms(request.query)
+        query_all_terms = _terms(request.query, filter_stop_words=False)
+        query_content_terms = _terms(request.query, filter_stop_words=True)
         matches: list[SourceChunk] = []
         scoped: list[SourceChunk] = []
         for chunk in self._chunks:
             if not is_in_scope(chunk, request):
                 continue
             scoped.append(chunk)
-            content_terms = _terms(chunk.content)
-            score = len(query_terms & content_terms) / max(len(query_terms), 1)
-            if score:
-                matches.append(chunk.model_copy(update={"score": score}))
+            chunk_all_terms = _terms(chunk.content + " " + (chunk.lecture_title or ""))
+            chunk_content_terms = _terms(chunk.content + " " + (chunk.lecture_title or ""), filter_stop_words=True)
+
+            overlap_content = len(query_content_terms & chunk_content_terms)
+            overlap_all = len(query_all_terms & chunk_all_terms)
+
+            if query_content_terms and chunk_content_terms:
+                score = overlap_content / len(query_content_terms)
+            else:
+                score = overlap_all / max(len(query_all_terms), 1)
+
+            if overlap_content > 0 or overlap_all > 0:
+                # Boost if page matches
+                if request.page is not None and chunk.page == request.page:
+                    score = max(score, 0.6) + 0.2
+                matches.append(chunk.model_copy(update={"score": min(score, 1.0)}))
 
         if request.page is not None:
             page_matches = [c for c in scoped if c.page == request.page]
