@@ -139,6 +139,12 @@ class TutorAgentTests(unittest.TestCase):
         self.assertEqual(response.citations[0].source_id, "day-02:4:0")
         self.assertEqual(response.citations[0].page, 4)
         self.assertIn("source_id=day-02:4:0", llm.last_user_prompt)
+        self.assertGreater(agent.last_trace.context_chars, 0)
+        self.assertIn("day-02:4:0", agent.last_trace.retrieved_source_ids)
+        self.assertEqual(
+            agent.last_trace.context_character_budget,
+            agent.context_character_budget,
+        )
 
     def test_summary_uses_current_page_scope_fallback(self) -> None:
         llm = FakeGroundedLLM(["day-01:2:0"])

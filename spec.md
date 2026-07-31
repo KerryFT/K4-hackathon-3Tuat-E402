@@ -169,15 +169,24 @@ hỏi lại một câu có chi phí thấp.
 
 ### Quality bar
 
-**DRAFT — phải pilot và chốt trước hạn 23:59:** đạt khi ≥80% case pass toàn bộ
-chiều bắt buộc; 0 unsupported factual claim trong nhóm nguồn-sự-thật/domain; và
-100% case hội thoại dài hoàn thành trong context budget. Sau khi chốt, không hạ bar.
+**ĐÃ KHÓA TRƯỚC RUN 01:** đạt khi ≥80% case pass toàn bộ chiều bắt buộc
+(tối thiểu 20/24); 0 unsupported factual claim trong nhóm
+nguồn-sự-thật/domain; và 100% case hội thoại dài hoàn thành trong context
+budget. Không hạ bar sau khi chạy; nếu chưa đạt thì giữ kết quả và phân tích
+nguyên nhân.
 
 ### Kết quả chạy
 
 | Run | Phiên bản | Pass | So với bar | Failure lớn nhất |
 |---|---|---:|---|---|
-| Run 01 | CP3 · `gpt-4o` · grounded cross-day | 1/1 smoke | Chưa kết luận bar 24 case | Chưa ghi nhận trong smoke; xem `eval/results-cp3.md` |
+| Smoke CP3 | `gpt-4o` · grounded cross-day | 1/1 smoke | Không dùng để kết luận bar 24 case | Xem `eval/results-cp3.md` |
+| Run 01 | `mock:gpt-4o` · checkout hiện tại | 4/24 (16,7%) | **Chưa đạt** ngưỡng 20/24 | 20 `EXECUTION_ERROR` vì chưa có index và LLM thật; xem `eval/run-01-summary.md` |
+| Run 02 | `openai:gpt-4o` · 760 chunks | 9/24 sau review (37,5%) | **Chưa đạt** ngưỡng 20/24; 3 unsupported claim trong nhóm nguồn-sự-thật/domain | 7 `INVALID_CITATION`, 4 `UNSUPPORTED_CLAIM`; xem `eval/run-02-summary.md` và `eval/run-02-review.md` |
+
+Run 02 được chấm theo hai phương pháp trên cùng output và corpus local:
+claim-by-claim và behavior-first. Sau adjudication,
+19/19 groundedness và 2/2 continuity áp dụng không còn `N/A`; cả hai regression
+vẫn đạt context budget, nhưng GS-004 fail continuity. Quality bar giữ nguyên.
 
 ## §8. Phân công & kế hoạch
 
