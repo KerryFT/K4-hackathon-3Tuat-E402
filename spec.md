@@ -213,23 +213,21 @@ Kết quả: 23/24 pass (95,8%), vượt quality bar ≥80%. Chi tiết cải ti
 
 | Phần | Người phụ trách |
 |---|---|
-| Spec | Thành viên 1 — nhóm trưởng |
-| Evidence (mining + khảo sát) | Thành viên 2 |
-| Prompt/retrieval/guardrails | Thành viên 3 |
-| Code (BE + FE + infra) | Thành viên 4 |
-| Demo/validation/slide | Thành viên 1 + Thành viên 2 |
+| Spec | Hoàng Vũ Trung Nguyên |
+| Evidence (mining + khảo sát) | Hoàng Vũ Trung Nguyên |
+| Prompt/retrieval/guardrails | Hoàng Trung Hải |
+| Code (BE + FE + infra) | Vũ Hữu Trường |
+| Demo/validation/slide | Hoàng Vũ Trung Nguyên + Hoàng Trung Hải |
 
 > **Lưu ý:** Thay tên thật của thành viên nhóm 3 Tuất vào bảng trên trước khi nộp.
 
 ### Willing users và validation
 
-- User 1: HV nhóm E401 — đã tham gia khảo sát Đường A.
-- User 2: HV nhóm E403 — đã tham gia khảo sát Đường A.
-- User 3: TA/trợ giảng — đã tham gia khảo sát Đường A.
-- CP5 cần ≥5 người ngoài nhóm; ưu tiên ba người trên + 2 HV từ zone khác.
-- Ba câu hỏi: “Điều gì khó hiểu hoặc khó chịu nhất?”; “Bạn có tin kết quả không—vì
-  sao?”; “Bạn có dùng thật không—vì sao/chưa?”
-- Người ghi log: Thành viên 2.
+- User 1: Phạm Anh Minh — đã tham gia khảo sát AI Chatbot.
+- User 2: Phạm Văn Vượng — đã tham gia khảo sát AI Chatbot.
+- User 3: Nguyễn Quốc Khánh — đã tham gia khảo AI Chatbot.
+- Ba câu hỏi: “Điều gì khiến bạn không hài lòng?”; “AI có tóm tắt được không”; “Bạn đã tự trải nghiệm chưa?”
+- Người ghi log: Hoàng Vũ Trung Nguyên.
 
 ### Multi-prototype
 
