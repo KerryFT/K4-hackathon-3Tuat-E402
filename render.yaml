@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: vlearn-backend
+    env: python
+    rootDir: be
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o
+      - key: CORS_ORIGINS
+        value: "*"
