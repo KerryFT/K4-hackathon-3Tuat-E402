@@ -2,7 +2,12 @@
 import Header from '../../components/Header'
 import FormattedChatMessage from '../../components/FormattedChatMessage'
 import { useEffect, useState, useRef } from 'react'
-import { getCourseInfo, getCourseDays, sendChatMessage } from '../../utils/api'
+import {
+  getCourseInfo,
+  getCourseDays,
+  resetConversationSession,
+  sendChatMessage,
+} from '../../utils/api'
 import { useApp } from '../../context/AppContext'
 
 const STORAGE_KEY_CHAT = 'vlearn_notebook_chat'
@@ -124,6 +129,7 @@ export default function NotebookPage() {
   function clearChat() {
     setChatMessages([])
     localStorage.removeItem(STORAGE_KEY_CHAT)
+    resetConversationSession()
   }
 
   const completedDays = days.filter(d => d.is_completed).length

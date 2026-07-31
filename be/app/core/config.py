@@ -13,6 +13,13 @@ _api_key = os.getenv("OPENAI_API_KEY", "").strip()
 _default_provider = "openai" if _api_key else os.getenv("LLM_PROVIDER", "mock")
 
 
+def _env_flag(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().casefold() in {"1", "true", "yes", "on"}
+
+
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "VLearn Context Tutor"
@@ -30,6 +37,14 @@ class Settings:
     lecture_index_path: str = os.getenv(
         "LECTURE_INDEX_PATH",
         str(BACKEND_DIR / "data" / "indexes" / "lecture_chunks.jsonl"),
+    )
+    conversation_log_enabled: bool = _env_flag(
+        "CONVERSATION_LOG_ENABLED",
+        True,
+    )
+    conversation_log_dir: str = os.getenv(
+        "CONVERSATION_LOG_DIR",
+        str(BACKEND_DIR.parent / "artifacts" / "conversations"),
     )
     cors_origins: list[str] = field(
         default_factory=lambda: [

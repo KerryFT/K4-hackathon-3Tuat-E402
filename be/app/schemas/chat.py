@@ -14,11 +14,12 @@ class LearningContext(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
-    conversation_id: str | None = None
+    conversation_id: str | None = Field(default=None, min_length=1, max_length=128)
     context: LearningContext = Field(default_factory=LearningContext)
 
 
 class ChatResponse(BaseModel):
+    conversation_id: str | None = None
     answer: str
     status: Literal["answered", "needs_clarification", "not_grounded", "not_configured", "out_of_scope"]
     scope: str
