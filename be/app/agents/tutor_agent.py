@@ -129,9 +129,8 @@ class TutorAgent:
         if self._is_greeting(request.message):
             return ChatResponse(
                 answer=(
-                    "Xin chào! Tôi là VLearn AI Tutor - Trợ lý học tập chuyên môn cho khóa học. "
-                    "Tôi có thể hỗ trợ bạn tóm tắt nội dung slide bài giảng, giải thích các khái niệm học thuật và gợi ý câu hỏi ôn tập. "
-                    "Bạn cần tìm hiểu hoặc giải đáp nội dung bài học nào hôm nay?"
+                    "Xin chào bạn! 👋 Rất vui được gặp bạn. Mình là **VLearn AI Tutor** - người đồng hành cùng bạn trong suốt khóa học. "
+                    "Hôm nay bạn muốn mình hỗ trợ tóm tắt slide bài giảng, giải thích các khái niệm học thuật hay gợi ý câu hỏi ôn tập?"
                 ),
                 status="answered",
                 scope=scope,
@@ -147,25 +146,13 @@ class TutorAgent:
             return clarification
 
         if is_off_topic_query(request.message):
-            return ChatResponse(
-                answer=(
-                    "Câu hỏi của bạn không thuộc phạm vi tài liệu môn học VLearn. "
-                    "VLearn AI Tutor chỉ hỗ trợ giải đáp các vấn đề liên quan đến slide bài giảng (Day 1, Day 2) và kiến thức học tập liên quan."
-                ),
-                status="out_of_scope",
-                scope=scope,
-                suggested_questions=[
-                    "Tóm tắt bài giảng Day 1",
-                    "Problem statement là gì?",
-                    "Gợi ý câu hỏi ôn tập",
-                ],
-            )
+            return self._tactful_off_topic_response(request.message, scope)
 
         if requests_impersonation_or_cheating(request.message):
             return ChatResponse(
                 answer=(
-                    "Tôi không thể làm bài tập hoặc hoàn thành yêu cầu thay bạn. "
-                    "Tuy nhiên, tôi có thể giải thích lý thuyết liên quan và hướng dẫn các bước thực hiện dựa trên tài liệu bài giảng để hỗ trợ bạn."
+                    "Mình không thể làm bài tập hoặc hoàn thành bài nộp thay bạn được. 💡 "
+                    "Tuy nhiên, VLearn AI Tutor rất sẵn lòng giải thích chi tiết lý thuyết liên quan và gợi ý từng bước định hướng dựa trên slide bài giảng để giúp bạn tự tin làm bài nhé!"
                 ),
                 status="not_grounded",
                 scope=scope,
@@ -214,8 +201,8 @@ class TutorAgent:
         if not sources:
             return ChatResponse(
                 answer=(
-                    "Nội dung bạn tìm kiếm hiện chưa có trong tài liệu slide bài giảng VLearn được cung cấp. "
-                    "Vui lòng kiểm tra lại câu hỏi hoặc chọn đúng tài liệu bài giảng (Day 1 / Day 2) để tôi tra cứu chính xác."
+                    "Thông tin này hiện chưa được đề cập chi tiết trong các slide bài giảng VLearn (Day 1 & Day 2). 💡 "
+                    "Bạn có thể thử chọn đúng bài giảng/trang slide hoặc đặt lại câu hỏi theo từ khóa bài học để VLearn AI Tutor tra cứu giúp bạn nhé!"
                 ),
                 status="not_grounded",
                 scope=scope,
@@ -375,6 +362,50 @@ class TutorAgent:
                 scope=scope,
             )
         return None
+
+    def _tactful_off_topic_response(self, message: str, scope: str) -> ChatResponse:
+        normalized = message.casefold().strip()
+
+        if any(w in normalized for w in ("thời tiết", "mưa", "nắng", "dự báo")):
+            answer = (
+                "Hôm nay tiết trời khá thú vị đấy! 🌤️ Nhưng dẫu thời tiết thế nào thì việc khám phá thêm kiến thức mới "
+                "luôn khiến tâm trạng chúng ta tốt hơn. Với vai trò là **VLearn AI Tutor**, mình rất sẵn lòng đồng hành cùng bạn "
+                "chinh phục nội dung trong các slide bài giảng. Bạn có muốn mình hỗ trợ tóm tắt Day 1 hay giải thích khái niệm nào hôm nay không?"
+            )
+        elif any(w in normalized for w in ("nấu", "ăn", "món", "công thức")):
+            answer = (
+                "Nghe đến món ăn ngon là thấy hấp dẫn rồi! 🍲 Sau những giờ học tập căng thẳng thì dùng bữa ngon miệng là tuyệt nhất. "
+                "Nhưng nếu bạn muốn thưởng thức một 'bữa ăn tri thức' với các bài học thú vị trong slide VLearn, **VLearn AI Tutor** luôn ở đây sẵn sàng hỗ trợ! "
+                "Bạn cần giải đáp nội dung slide Day 1 hay Day 2?"
+            )
+        elif any(w in normalized for w in ("bóng đá", "kqbd", "thể thao", "trận đấu", "xe", "mua xe")):
+            answer = (
+                "Chủ đề thể thao và giải trí luôn thật sôi động và kịch tính! ⚽ Nhưng trong 'trận đấu' chinh phục tri thức môn học VLearn, "
+                "**VLearn AI Tutor** sẵn sàng làm đồng đội đắc lực để hỗ trợ bạn đạt kết quả tốt nhất. Hãy hỏi mình về các khái niệm hoặc bài học bất cứ lúc nào nhé!"
+            )
+        elif any(w in normalized for w in ("thơ", "truyện", "tình yêu", "tâm sự", "bói", "tử vi", "lotto", "vé số", "game")):
+            answer = (
+                "Chủ đề này nghe rất thư giãn và ngẫu hứng đấy! 😊 Tuy nhiên, với vai trò là **VLearn AI Tutor**, "
+                "sứ mệnh quan trọng nhất của mình là trợ giúp bạn tiếp thu bài học một cách hiệu quả và sinh động nhất. "
+                "Bạn muốn mình giúp giải thích khái niệm học thuật nào hay tóm tắt slide bài giảng không?"
+            )
+        else:
+            answer = (
+                "Chủ đề bạn hỏi nghe rất thú vị! 😊 Tuy nhiên, là **VLearn AI Tutor**, mình được thiết kế để tập trung "
+                "đồng hành cùng bạn trong khóa học này, giải đáp các slide bài giảng (Day 1 & Day 2) một cách chuẩn xác và dễ hiểu nhất. "
+                "Bạn có muốn mình hỗ trợ giải đáp khái niệm hay tóm tắt bài học nào ngay bây giờ không?"
+            )
+
+        return ChatResponse(
+            answer=answer,
+            status="out_of_scope",
+            scope=scope,
+            suggested_questions=[
+                "Tóm tắt bài giảng Day 1",
+                "Problem statement là gì?",
+                "Giải thích khái niệm trong slide Day 2",
+            ],
+        )
 
     def _build_search_request(
         self,

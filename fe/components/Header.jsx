@@ -53,30 +53,30 @@ export default function Header({ onStart }) {
 
   return (
     <header className="w-full bg-white dark:bg-[#1E293B] border-b border-slate-200 dark:border-slate-700/80 transition-colors duration-200 sticky top-0 z-40">
-      <div className="container-centered flex items-center justify-between py-3">
-        <div className="flex items-center gap-8">
+      <div className="container-centered flex items-center justify-between py-2.5 sm:py-3 gap-2 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-6 md:gap-8 min-w-0">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
             <div className="w-8 h-8 flex items-center justify-center">
               <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden>
                 <path d="M4 16L16 4L28 16" stroke="#E11D48" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M4 16L16 28L28 16" stroke={dark ? "#38BDF8" : "#0B3B60"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="font-extrabold text-slate-900 dark:text-white text-lg tracking-tight">VLearn</span>
+            <span className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg tracking-tight">VLearn</span>
           </Link>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-1 text-sm">
+          <nav className="flex items-center gap-0.5 sm:gap-1 text-xs sm:text-sm overflow-x-auto no-scrollbar">
             <Link
               href="/"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 isHome
                   ? 'text-[#0B3B60] dark:text-[#38BDF8] font-semibold bg-slate-100 dark:bg-slate-800'
                   : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
               </svg>
@@ -85,13 +85,13 @@ export default function Header({ onStart }) {
 
             <Link
               href="/my-courses"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 isCourses
                   ? 'text-[#0B3B60] dark:text-[#38BDF8] font-semibold bg-slate-100 dark:bg-slate-800'
                   : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
               </svg>
@@ -102,13 +102,13 @@ export default function Header({ onStart }) {
             {showNotebook && (
               <Link
                 href="/notebook"
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors font-medium ${
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors font-medium whitespace-nowrap ${
                   isNotebook
                     ? 'text-[#0B3B60] dark:text-[#38BDF8] font-semibold bg-slate-100 dark:bg-slate-800'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                   <line x1="8" y1="7" x2="16" y2="7"/>
@@ -121,26 +121,26 @@ export default function Header({ onStart }) {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
           {/* 1. Mở Codelabs -> https://codelabs.vlearn.dev/codelab */}
           <a
             href="https://codelabs.vlearn.dev/codelab"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 dark:text-slate-400">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
               <polyline points="15 3 21 3 21 9"/>
               <line x1="10" y1="14" x2="21" y2="3"/>
             </svg>
-            <span>{t.openCodelabs}</span>
+            <span className="hidden sm:inline">{t.openCodelabs}</span>
           </a>
 
           {/* 2. Language toggle VI / EN */}
           <button
             onClick={toggleLang}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
+            className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
             title="Đổi ngôn ngữ / Change language"
           >
             {lang}
@@ -149,12 +149,12 @@ export default function Header({ onStart }) {
           {/* 3. Dark mode toggle */}
           <button
             onClick={toggleDark}
-            className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
+            className="p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm"
             title={dark ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối"}
           >
             {dark ? (
               /* Sun icon for light mode */
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
                 <circle cx="12" cy="12" r="5"/>
                 <line x1="12" y1="1" x2="12" y2="3"/>
                 <line x1="12" y1="21" x2="12" y2="23"/>
@@ -167,7 +167,7 @@ export default function Header({ onStart }) {
               </svg>
             ) : (
               /* Moon icon for dark mode */
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
               </svg>
             )}
@@ -177,12 +177,12 @@ export default function Header({ onStart }) {
           <div className="relative" ref={popupRef}>
             <button
               onClick={() => setOpenUser(!openUser)}
-              className="flex items-center gap-2.5 px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 sm:gap-2.5 px-2 py-1 sm:px-3 sm:py-1.5 border border-slate-200 dark:border-slate-700 rounded-full hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm"
             >
-              <div className="bg-slate-100 dark:bg-slate-700 text-[#0B3B60] dark:text-[#38BDF8] w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold">
+              <div className="bg-slate-100 dark:bg-slate-700 text-[#0B3B60] dark:text-[#38BDF8] w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold">
                 {user.avatarChar}
               </div>
-              <div className="text-sm text-slate-700 dark:text-slate-200 max-w-[160px] truncate font-medium">
+              <div className="hidden md:block text-sm text-slate-700 dark:text-slate-200 max-w-[160px] truncate font-medium">
                 {user.shortEmail}
               </div>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-slate-400 transition-transform duration-200 ${openUser ? 'rotate-180' : ''}`}>

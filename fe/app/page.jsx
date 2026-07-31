@@ -46,21 +46,21 @@ export default function HomePage() {
 
       {/* Top banner */}
       <div className="bg-white dark:bg-[#1E293B] border-b border-slate-200 dark:border-slate-800 transition-colors">
-        <div className="container-centered py-6 flex items-center justify-between">
+        <div className="container-centered py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
           <div>
             <div className="text-xs font-bold text-[#E11D48] tracking-wider uppercase">
               {t.subHeading}
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1.5">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
               {t.title}
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
               {t.description}
             </p>
           </div>
           <Link
             href="/my-courses"
-            className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap"
+            className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shadow-xs"
           >
             <span className="text-[#0B3B60] dark:text-[#38BDF8] font-semibold">{t.coursesCount}</span>
           </Link>
@@ -68,7 +68,7 @@ export default function HomePage() {
       </div>
 
       {/* Main content */}
-      <main className="container-centered py-6 space-y-5">
+      <main className="container-centered py-4 sm:py-6 space-y-5">
         {/* Welcome card */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0B3B60] to-[#1565A8] dark:from-[#1E3A8A] dark:to-[#0F4C81] shadow-md" style={{minHeight: '180px'}}>
           {/* Decorative red accent */}
@@ -78,7 +78,7 @@ export default function HomePage() {
             </svg>
           </div>
 
-          <div className="relative z-10 p-8">
+          <div className="relative z-10 p-5 sm:p-8">
             <div className="text-xs font-bold text-blue-200 tracking-wider uppercase">
               {t.subHeading}
             </div>

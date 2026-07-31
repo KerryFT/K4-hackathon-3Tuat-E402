@@ -116,10 +116,10 @@ export default function DayCard({ day, onToggle }){
               {/* Download button */}
               <button
                 onClick={(e) => handleDownload(e, slide)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium
+                className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg text-xs font-medium
                            text-[#0B3B60] dark:text-[#38BDF8] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
                            hover:bg-[#0B3B60] hover:text-white dark:hover:bg-[#38BDF8] dark:hover:text-slate-900
-                           transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-sm"
+                           transition-all duration-200 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 shadow-sm"
                 title={`Tải ${slide.name}`}
               >
                 <DownloadIcon />

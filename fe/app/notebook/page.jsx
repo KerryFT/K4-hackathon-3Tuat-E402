@@ -2,7 +2,12 @@
 import Header from '../../components/Header'
 import FormattedChatMessage from '../../components/FormattedChatMessage'
 import { useEffect, useState, useRef } from 'react'
-import { getCourseInfo, getCourseDays, sendChatMessage } from '../../utils/api'
+import {
+  getCourseInfo,
+  getCourseDays,
+  resetConversationSession,
+  sendChatMessage,
+} from '../../utils/api'
 import { useApp } from '../../context/AppContext'
 
 const STORAGE_KEY_CHAT = 'vlearn_notebook_chat'
@@ -128,6 +133,7 @@ export default function NotebookPage() {
   function clearChat() {
     setChatMessages([])
     localStorage.removeItem(STORAGE_KEY_CHAT)
+    resetConversationSession()
   }
 
   const completedDays = days.filter(d => d.is_completed).length
@@ -178,12 +184,12 @@ export default function NotebookPage() {
       {/* Tabs */}
       <div className="bg-white dark:bg-[#1E293B] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 transition-colors">
         <div className="container-centered">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto whitespace-nowrap no-scrollbar">
             {tabs.map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-all shrink-0 ${
                   activeTab === tab.key
                     ? 'border-[#0B3B60] dark:border-[#38BDF8] text-[#0B3B60] dark:text-[#38BDF8]'
                     : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
@@ -202,14 +208,14 @@ export default function NotebookPage() {
         </div>
       </div>
 
-      <main className="container-centered py-6">
+      <main className="container-centered py-4 sm:py-6">
         {/* PROGRESS TAB */}
         {activeTab === 'progress' && (
           <div className="space-y-5">
             {/* Overview card */}
-            <div className="bg-white dark:bg-[#1E293B] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+            <div className="bg-white dark:bg-[#1E293B] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 sm:p-6">
               <h2 className="text-base font-bold text-slate-900 dark:text-white mb-4">{t.progressOverview}</h2>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
                 {/* Circular progress */}
                 <div className="relative w-24 h-24 flex-shrink-0">
                   <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">

@@ -429,6 +429,12 @@ export default function SlideReaderPage() {
       {/* Main Workspace Body */}
       <div className="flex-1 flex relative overflow-hidden">
         {/* Sidebar Left Navigation Accordion Panel */}
+        {sidebarOpen && (
+          <div
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden fixed inset-0 bg-slate-900/50 z-15 backdrop-blur-xs transition-opacity"
+          />
+        )}
         <aside
           className={`bg-[#F8FAFC] dark:bg-[#0F172A] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] z-20 flex flex-col shadow-lg overflow-hidden ${
             sidebarOpen ? 'w-72 opacity-100' : 'w-0 opacity-0 pointer-events-none'
@@ -558,8 +564,8 @@ export default function SlideReaderPage() {
         {/* Center Main Workspace Canvas Area */}
         <div className="flex-1 flex flex-col bg-[#F1F5F9] dark:bg-[#0B132B] relative overflow-hidden transition-colors duration-300">
           {/* Top Control Floating Toolbar */}
-          <div className="p-3 flex justify-center z-10">
-            <div className="bg-white/90 dark:bg-[#1E293B]/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-md rounded-full px-4 py-1.5 flex items-center gap-3 text-xs font-semibold transition-colors duration-300">
+          <div className="p-2 sm:p-3 flex justify-center z-10 max-w-full overflow-x-auto">
+            <div className="bg-white/90 dark:bg-[#1E293B]/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-md rounded-2xl md:rounded-full px-3 py-1.5 flex flex-wrap md:flex-nowrap items-center justify-center gap-2 md:gap-3 text-xs font-semibold transition-colors duration-300 max-w-full">
               {/* Reading Tool Selection */}
               <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-full border border-slate-200/60 dark:border-slate-700/60">
                 <button
@@ -794,7 +800,7 @@ export default function SlideReaderPage() {
 
         {/* AI Tutor Slide-Over Drawer */}
         {aiDrawerOpen && (
-          <div className="fixed inset-y-0 right-0 w-96 bg-white dark:bg-[#1E293B] border-l border-slate-200 dark:border-slate-800 shadow-2xl z-50 flex flex-col transition-all duration-300">
+          <div className="fixed inset-y-0 right-0 w-full sm:w-96 max-w-full bg-white dark:bg-[#1E293B] border-l border-slate-200 dark:border-slate-800 shadow-2xl z-50 flex flex-col transition-all duration-300">
             {/* Drawer Header */}
             <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
               <div className="flex items-center gap-2">
