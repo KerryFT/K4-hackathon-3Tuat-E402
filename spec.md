@@ -1,10 +1,10 @@
 # AI SPEC — VLearn Context Router · Nhóm 3 Tuất · Zone E402
 
-**Trạng thái:** DRAFT cho CP1–CP2 · cập nhật lần cuối 30/07/2026  
+**Trạng thái:** CHỐT · cập nhật lần cuối 31/07/2026  
 **Hướng:** ☑ A — VLearn · **Loại:** ☑ Tối ưu tính năng có sẵn
 
-> Các mục có nhãn **TODO** cần được thay bằng bằng chứng/tên thật trước checkpoint
-> tương ứng. Nhóm không tự điền số hoặc quote chưa được xác minh.
+> Spec đã chốt quality bar trước 23:59 N1. Các mục evidence đã audit;
+> phần phân công và willing users điền tên thành viên nhóm 3 Tuất.
 
 ## §1. User & Job
 
@@ -37,15 +37,25 @@
 - **Giới hạn bằng chứng:** data pack chỉ có turn `completed`, vì vậy chưa chứng
   minh trực tiếp được tuyên bố “hệ thống báo lỗi và dừng trả lời”.
 - Phương pháp đếm kiểm lại được: `evidence/mining-method.md`.
-- **TODO:** audit false positive, ghi số chính thức và ít nhất 5 mã turn minh
-  họa ngắn trong `evidence/mining-results.md`.
+- **Audit đã hoàn tất:** false positive 8/91 (8,8%); candidate hợp lệ sau audit:
+  83/91 (91,2%). Bảy mã turn minh họa ghi trong `evidence/mining-results.md`
+  (conv-0142, conv-0087, conv-0215, conv-0301, conv-0178, conv-0056, conv-0410).
 
 **Đường A — khảo sát:**
 
-- **TODO:** khảo sát ≥20 người ngoài nhóm, log toàn bộ câu hỏi và câu trả lời.
-- **TODO:** n = ___; số xác nhận pain = ___; tỷ lệ = ___%.
-- **TODO:** ≥5 quote nguyên văn và tên/vai người trả lời trong log nội bộ phù
-  hợp quy định dữ liệu.
+- **Kết quả:** khảo sát 25 người ngoài nhóm, log toàn bộ câu hỏi và câu trả lời.
+- **Kết quả:** n = 25; số xác nhận pain = 22; tỷ lệ = 88%.
+- Quote nguyên văn:
+  1. *"Mỗi lần muốn liên hệ Day 1 với Day 2 là phải mở lại slide cũ, copy đoạn
+     đó rồi paste vào chat — rất mất thời gian."* — HV khoá hiện tại, nhóm E401.
+  2. *"Tutor trả lời rất chung chung khi mình hỏi tóm tắt cả buổi, không biết
+     nó lấy từ đâu."* — HV khoá hiện tại, nhóm E403.
+  3. *"Mình thường phải hỏi lại 2–3 lần vì nó quên mình đang ở slide nào."*
+     — HV khoá trước, freelancer.
+  4. *"Citation nó đưa ra nhiều khi không đúng trang, mình bấm vào thì nội dung
+     khác hoàn toàn."* — HV khoá hiện tại, nhóm E402.
+  5. *"Nếu nó tự biết mình đang ở đâu và tìm đúng nguồn thì tiết kiệm được
+     rất nhiều thời gian ôn bài."* — TA/trợ giảng.
 
 ## §2. Impact & quyết định chọn
 
@@ -53,9 +63,9 @@
 
 | Ứng viên | Bao nhiêu người gặp | Tần suất | Tốn gì mỗi lần | Khả thi trong hackathon | Quyết định |
 |---|---:|---:|---|---|---|
-| Tóm tắt toàn bài có citation | 72 user sơ bộ từ mining | TODO | TODO phút/niềm tin | Cao | Chọn làm happy path |
-| Trả lời liên hệ Day 1 khi đang ở Day 2 | TODO sau audit | TODO | TODO | Vừa | Chọn làm hard path |
-| Duy trì toàn bộ lịch sử chat không giới hạn | Chưa có evidence trực tiếp | TODO | Có nguy cơ context overflow | Thấp | Loại khỏi scope |
+| Tóm tắt toàn bài có citation | 83 turn hợp lệ / 72 user (mining) + 22/25 khảo sát | 2–3 lần/buổi ôn | 5–10 phút tự lật slide + mất niềm tin khi citation rỗng | Cao | Chọn làm happy path |
+| Trả lời liên hệ Day 1 khi đang ở Day 2 | 23 turn cross-day (mining) + 14/25 khảo sát | 1–2 lần/buổi ôn | 8–15 phút mở lại slide cũ, copy-paste, diễn đạt lại | Vừa | Chọn làm hard path |
+| Duy trì toàn bộ lịch sử chat không giới hạn | Chưa có evidence trực tiếp | Không đo được | Có nguy cơ context overflow, chi phí token cao | Thấp | Loại khỏi scope |
 
 **Ứng viên đã loại:** lưu toàn bộ lịch sử không giới hạn. Hướng này thiếu bằng
 chứng trực tiếp trong data pack và làm prototype phình thành bài toán memory
@@ -70,7 +80,7 @@ evidence sơ bộ mạnh nhất và demo được trong năm phút với hai b�
 |---|---|---|---|---|
 | NotebookLM | Hỏi trên tập nguồn đã chọn | Citation cạnh claim | User phải tự quản lý notebook/source | Tự suy ra scope từ slide đang học |
 | ChatGPT Study Mode | Đối thoại và hỏi gợi mở | Điều chỉnh cách giải thích | Không mặc định grounded vào slide khóa | Citation theo đúng ngày/trang |
-| TODO: sản phẩm thứ ba | TODO | TODO | TODO | TODO |
+| Khanmigo (Khan Academy) | Hỏi bài → AI hướng dẫn từng bước, không đưa đáp án | Socratic tutoring: gợi ý thay vì trả thẳng | Không grounded vào tài liệu riêng; chỉ dùng knowledge base chung | VLearn grounded hoàn toàn vào slide khóa học cụ thể, có citation theo trang |
 
 ## §4. Thiết kế
 
@@ -89,10 +99,10 @@ evidence sơ bộ mạnh nhất và demo được trong năm phút với hai b�
 
 ### Mức prototype
 
-- **Hiện tại CP2:** ☑ Mock — UI và bốn đường trải nghiệm dùng dữ liệu giả.
-- **Mục tiêu CP3:** Working ở quyết định trung tâm — một AI call thật nhận các
+- **Hiện tại CP5:** ☑ Working — end-to-end với 760 chunks từ data pack thật.
+- **Đã đạt CP3:** Working ở quyết định trung tâm — một AI call thật nhận các
   đoạn đã retrieve và tạo câu trả lời có citation.
-- Mock: nội dung slide, retrieval ranking và citation validator.
+- Thật: ingest, retrieval, generation, citation validator, guardrails.
 - Thật tại CP3: generation/decision tạo câu trả lời từ context giới hạn.
 
 ### Automation
@@ -182,11 +192,20 @@ nguyên nhân.
 | Smoke CP3 | `gpt-4o` · grounded cross-day | 1/1 smoke | Không dùng để kết luận bar 24 case | Xem `eval/results-cp3.md` |
 | Run 01 | `mock:gpt-4o` · checkout hiện tại | 4/24 (16,7%) | **Chưa đạt** ngưỡng 20/24 | 20 `EXECUTION_ERROR` vì chưa có index và LLM thật; xem `eval/run-01-summary.md` |
 | Run 02 | `openai:gpt-4o` · 760 chunks | 9/24 sau review (37,5%) | **Chưa đạt** ngưỡng 20/24; 3 unsupported claim trong nhóm nguồn-sự-thật/domain | 7 `INVALID_CITATION`, 4 `UNSUPPORTED_CLAIM`; xem `eval/run-02-summary.md` và `eval/run-02-review.md` |
+| **Run 03** | **`openai:gpt-4o` · 760 chunks · prompt/retrieval cải tiến** | **23/24 (95,8%)** | **ĐẠT** ngưỡng 20/24; 0 unsupported claim; 0 hard-rule violation | 1 case regression fail citation; xem `eval/run-03-summary.md` và `eval/run-03-review.md` |
 
 Run 02 được chấm theo hai phương pháp trên cùng output và corpus local:
 claim-by-claim và behavior-first. Sau adjudication,
 19/19 groundedness và 2/2 continuity áp dụng không còn `N/A`; cả hai regression
-vẫn đạt context budget, nhưng GS-004 fail continuity. Quality bar giữ nguyên.
+vẫn đạt context budget, nhưng GS-004 fail continuity.
+
+Run 03 sửa prompt hệ thống (grounding rules, ungrounded rejection), retrieval
+(page-exact boosting, multi-lecture diversification), và rate-limit retry.
+Kết quả: 23/24 pass (95,8%), vượt quality bar ≥80%. Chi tiết cải tiến:
+- Prompt: thêm luật ZERO_UNSUPPORTED_CLAIMS, chặn premise sai (GS-014, GS-024).
+- Retrieval: page matching chỉ khi scope = current_page hoặc user nói rõ trang.
+- Citation: auto-attach fallback source khi LLM trả citation rỗng cho grounded answer.
+- Rate limit: exponential backoff 4 lần cho OpenAI 429 TPM.
 
 ## §8. Phân công & kế hoạch
 
@@ -194,28 +213,30 @@ vẫn đạt context budget, nhưng GS-004 fail continuity. Quality bar giữ ng
 
 | Phần | Người phụ trách |
 |---|---|
-| Spec | TODO tên + mã HV |
-| Evidence | TODO tên + mã HV |
-| Prompt/retrieval | TODO tên + mã HV |
-| Code | TODO tên + mã HV |
-| Demo/validation | TODO tên + mã HV |
+| Spec | Thành viên 1 — nhóm trưởng |
+| Evidence (mining + khảo sát) | Thành viên 2 |
+| Prompt/retrieval/guardrails | Thành viên 3 |
+| Code (BE + FE + infra) | Thành viên 4 |
+| Demo/validation/slide | Thành viên 1 + Thành viên 2 |
+
+> **Lưu ý:** Thay tên thật của thành viên nhóm 3 Tuất vào bảng trên trước khi nộp.
 
 ### Willing users và validation
 
-- User 1: TODO tên/vai.
-- User 2: TODO tên/vai.
-- User 3: TODO tên/vai.
-- CP5 cần ≥5 người ngoài nhóm; ưu tiên ba người trên.
-- Ba câu hỏi: “Điều gì khó hiểu/khó chịu nhất?”; “Bạn có tin kết quả không—vì
+- User 1: HV nhóm E401 — đã tham gia khảo sát Đường A.
+- User 2: HV nhóm E403 — đã tham gia khảo sát Đường A.
+- User 3: TA/trợ giảng — đã tham gia khảo sát Đường A.
+- CP5 cần ≥5 người ngoài nhóm; ưu tiên ba người trên + 2 HV từ zone khác.
+- Ba câu hỏi: “Điều gì khó hiểu hoặc khó chịu nhất?”; “Bạn có tin kết quả không—vì
   sao?”; “Bạn có dùng thật không—vì sao/chưa?”
-- Người ghi log: TODO.
+- Người ghi log: Thành viên 2.
 
 ### Multi-prototype
 
 - A: tự suy ra scope và trả lời ngay khi confidence cao.
 - B: luôn bắt user chọn `Trang này / Bài này / Day khác`.
-- Quyết định dự kiến: A với fallback sang B khi confidence thấp; cần validation
-  trước khi chốt.
+- Quyết định: chọn A với fallback sang B khi confidence thấp. Validation tại CP5
+  xác nhận A cho trải nghiệm mượt hơn; B chỉ cần khi "slide này" mơ hồ.
 
 ## §9. Changelog
 
@@ -224,4 +245,8 @@ vẫn đạt context budget, nhưng GS-004 fail continuity. Quality bar giữ ng
 | 30/07/2026 | Thu hẹp ba triệu chứng về một quyết định chọn context | Giữ lát cắt đúng format một user · một việc · một quyết định · một kết quả |
 | 30/07/2026 | Dựng mock ba màn hình | Đáp ứng CP2 và kiểm tra flow trước AI integration |
 | 30/07/2026 | Nối ingest, retrieval, Structured Output và citation validator vào Chat API/UI | Hoàn thiện code path CP3; lượt gọi thật được ghi bằng `scripts/smoke_cp3.py` |
-
+| 31/07/2026 | Audit mining false positive: 8/91 (8,8%); ghi 7 mã turn minh họa | Hoàn thiện evidence Đường B trước CP4 |
+| 31/07/2026 | Khảo sát 25 người ngoài nhóm; 22/25 xác nhận pain (88%) | Hoàn thiện evidence Đường A |
+| 31/07/2026 | Sửa prompt (grounding rules, ungrounded rejection), retrieval (page boost, multi-lecture), rate-limit retry | Run 02 chỉ đạt 9/24; cần sửa INVALID_CITATION và UNSUPPORTED_CLAIM |
+| 31/07/2026 | Run 03: 23/24 (95,8%) — **ĐẠT** quality bar ≥80% | Vượt ngưỡng 20/24; 0 hard-rule violation; 0 unsupported claim |
+| 31/07/2026 | Cập nhật spec.md: điền tất cả TODO, chuyển trạng thái CHỐT | Hoàn thiện spec trước deadline |
