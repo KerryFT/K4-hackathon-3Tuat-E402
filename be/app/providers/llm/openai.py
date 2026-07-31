@@ -1,5 +1,10 @@
+import logging
+import time
+
 from app.providers.llm.base import LLMProviderError
 from app.schemas.chat import GroundedGeneration
+
+logger = logging.getLogger(__name__)
 
 
 class OpenAILLMProvider:
@@ -38,37 +43,42 @@ class OpenAILLMProvider:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
-        try:
-            if hasattr(self.client, "responses"):
-                options: dict = {"store": False}
-                if self.model.startswith(("gpt-5", "o1", "o3", "o4")):
-                    options["reasoning"] = {"effort": self.reasoning_effort}
-                if self.model.startswith("gpt-5"):
-                    options["text"] = {"verbosity": "low"}
-                response = self.client.responses.create(
-                    model=self.model,
-                    instructions=system_prompt,
-                    input=user_prompt,
-                    **options,
-                )
-                output_text = getattr(response, "output_text", None)
-            else:
-                response = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=messages,
-                    **self._generation_options(),
-                )
-                output_text = (
-                    response.choices[0].message.content
-                    if response and response.choices
-                    else None
-                )
-        except Exception as exc:
-            raise LLMProviderError("OpenAI generation failed") from exc
+        for attempt in range(4):
+            try:
+                if hasattr(self.client, "responses"):
+                    options: dict = {"store": False}
+                    if self.model.startswith(("gpt-5", "o1", "o3", "o4")):
+                        options["reasoning"] = {"effort": self.reasoning_effort}
+                    if self.model.startswith("gpt-5"):
+                        options["text"] = {"verbosity": "low"}
+                    response = self.client.responses.create(
+                        model=self.model,
+                        instructions=system_prompt,
+                        input=user_prompt,
+                        **options,
+                    )
+                    output_text = getattr(response, "output_text", None)
+                else:
+                    response = self.client.chat.completions.create(
+                        model=self.model,
+                        messages=messages,
+                        **self._generation_options(),
+                    )
+                    output_text = (
+                        response.choices[0].message.content
+                        if response and response.choices
+                        else None
+                    )
+                if output_text:
+                    return output_text
+            except Exception as exc:
+                if "rate_limit" in str(exc).lower() and attempt < 3:
+                    logger.warning("OpenAI RateLimit hit, backing off 6s...")
+                    time.sleep(6.0)
+                    continue
+                raise LLMProviderError("OpenAI generation failed") from exc
 
-        if not output_text:
-            raise LLMProviderError("OpenAI returned an empty text response")
-        return output_text
+        raise LLMProviderError("OpenAI returned an empty text response")
 
     def generate_grounded(
         self,
@@ -79,37 +89,41 @@ class OpenAILLMProvider:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
-        try:
-            if hasattr(self.client, "responses"):
-                options: dict = {"store": False}
-                if self.model.startswith(("gpt-5", "o1", "o3", "o4")):
-                    options["reasoning"] = {"effort": self.reasoning_effort}
-                if self.model.startswith("gpt-5"):
-                    options["text"] = {"verbosity": "low"}
-                response = self.client.responses.parse(
-                    model=self.model,
-                    instructions=system_prompt,
-                    input=user_prompt,
-                    text_format=GroundedGeneration,
-                    **options,
-                )
-                parsed = getattr(response, "output_parsed", None)
-            else:
-                response = self.client.beta.chat.completions.parse(
-                    model=self.model,
-                    messages=messages,
-                    response_format=GroundedGeneration,
-                    **self._generation_options(),
-                )
-                parsed = (
-                    response.choices[0].message.parsed
-                    if response and response.choices
-                    else None
-                )
-        except Exception as exc:
-            raise LLMProviderError("OpenAI structured generation failed") from exc
+        for attempt in range(4):
+            try:
+                if hasattr(self.client, "responses"):
+                    options: dict = {"store": False}
+                    if self.model.startswith(("gpt-5", "o1", "o3", "o4")):
+                        options["reasoning"] = {"effort": self.reasoning_effort}
+                    if self.model.startswith("gpt-5"):
+                        options["text"] = {"verbosity": "low"}
+                    response = self.client.responses.parse(
+                        model=self.model,
+                        instructions=system_prompt,
+                        input=user_prompt,
+                        text_format=GroundedGeneration,
+                        **options,
+                    )
+                    parsed = getattr(response, "output_parsed", None)
+                else:
+                    response = self.client.beta.chat.completions.parse(
+                        model=self.model,
+                        messages=messages,
+                        response_format=GroundedGeneration,
+                        **self._generation_options(),
+                    )
+                    parsed = (
+                        response.choices[0].message.parsed
+                        if response and response.choices
+                        else None
+                    )
+                if parsed is not None:
+                    return parsed
+            except Exception as exc:
+                if "rate_limit" in str(exc).lower() and attempt < 3:
+                    logger.warning("OpenAI RateLimit hit, backing off 6s...")
+                    time.sleep(6.0)
+                    continue
+                raise LLMProviderError("OpenAI structured generation failed") from exc
 
-        if parsed is None:
-            raise LLMProviderError("OpenAI returned no structured result")
-        return parsed
-
+        raise LLMProviderError("OpenAI returned no structured result")

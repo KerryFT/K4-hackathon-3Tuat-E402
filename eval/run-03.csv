@@ -1,0 +1,135 @@
+run_id,run_at,model,commit_sha,case_id,response_status,response_scope,answer,citation_source_ids,citation_pages,latency_ms,context_chars,groundedness,citation_correctness,scope_coverage,continuity,graceful_failure,context_efficiency,judge_1,judge_2,adjudicated_result,overall_pass,failure_code,notes
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-001,answered,selected_lectures,"- **Day 1** tập trung vào việc hiểu và sử dụng **transformer** cũng như những khái niệm liên quan đến kiến trúc AI như **temperature** hay **top k, top p**. Đây là những công cụ quan trọng để tạo ra các mô hình AI thông minh, hỗ trợ trong việc xử lý ngôn ngữ tự nhiên và sinh từ tiếp theo dựa trên xác suất.
+
+- **Day 2** chú trọng vào việc xác định **problem statement** và xem xét liệu AI có phải là giải pháp phù hợp cho một vấn đề cụ thể hay không. Quy trình này bao gồm đánh giá nhu cầu sử dụng AI, mức độ tự động hóa cần thiết, và các tiêu chí để đo lường thành công.
+
+- Mối liên hệ giữa **problem statement ở Day 2** với nền tảng AI và **LLM ở Day 1** là việc sử dụng kiến thức về mô hình AI như transformer (từ Day 1) để tiếp cận và giải quyết các vấn đề cụ thể đã được định nghĩa rõ ràng (problem statement từ Day 2). Bằng cách hiểu rõ khả năng của AI, chúng ta có thể chọn công cụ và phương pháp phù hợp để phát triển một hệ thống AI tối ưu nhất.
+
+- Cả hai ngày đều nhấn mạnh việc áp dụng kỹ thuật AI và LLM vào các lĩnh vực cụ thể và cách tích hợp chúng vào quy trình công việc thực tế.",day-02:13:0|T03-021|T04-070,13,7964,5598,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-002,needs_clarification,all_lectures,Bạn muốn hỏi trang nào? Hãy mở slide cần hỏi hoặc chọn rõ Day và số trang để mình dùng đúng nguồn.,,,0,0,N/A,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-003,answered,current_lecture,Tài liệu không nêu rõ trang khi đề cập mô hình đạt 100% độ chính xác. Nội dung mô tả cách LLM có thể gọi tool Python để đếm chữ cái trong một từ với độ chính xác 100%.,T01-029,,2464,5886,PASS,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-004,answered,selected_lectures,"- **Attention và Transformer**: Khái niệm về attention trong kiến trúc Transformer rất quan trọng. Nó giúp mô hình nhận biết được thông tin nào cần chú ý trong một khối dữ liệu lớn. Việc quản lý hiệu quả ngữ cảnh giúp AI hoạt động tốt hơn dù với lượng dữ liệu ít hơn nhưng chất lượng cao hơn.
+
+- **Machine Learning và Deep Learning**: Machine learning cho phép máy tự học từ dữ liệu mà không cần lập trình chi tiết. Deep learning là một bước phát triển của machine learning, nổi bật với khả năng nhận dạng và phân loại từ dữ liệu quy mô lớn.
+
+- **Importance of Language in LLMs**: Large Language Models (LLMs) yêu cầu khả năng ngôn ngữ xuất sắc để tạo ra kết quả chất lượng. Đọc nhiều và nắm vững ngữ nghĩa là yếu tố quan trọng để điều khiển và sử dụng LLM hiệu quả.
+
+- **AI Development History**: Từ phong trào AI mùa đông đến sự bùng nổ của deep learning với cuộc thi ImageNet năm 2012. Kiến trúc Transformer ra đời năm 2017 là bước ngoặt quan trọng, góp phần phát triển các ứng dụng như ChatGPT.
+
+- **Open Source Contribution**: Tham gia vào các dự án mã nguồn mở như một phương pháp học hỏi và thăng tiến nghề nghiệp. Việc này không chỉ giúp cải thiện kỹ năng mà còn mở rộng cơ hội việc làm thông qua sự công nhận của cộng đồng.
+
+- **Khóa học AI toàn diện**: Chương trình tập trung từ khâu thiết kế, phát triển, quản lý đến triển khai AI ở cấp độ production, bao gồm ML, prompt engineering, CI/CD, cloud infrastructure, và quản lý dự án.
+
+Các yếu tố trên được rút ra từ các phần khác nhau trong nội dung đã chia sẻ về Day 1.",T04-053|T06-037|T06-045|T06-059|T06-074,,31753,11278,PASS,PASS,PASS,PASS,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness|continuity
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-005,answered,current_lecture,"- **Context** (ngữ cảnh) là toàn bộ thông tin mà một mô hình có thể tiêu thụ trong một lần xử lý. Nó quyết định lượng thông tin mà mô hình có thể xử lý đồng thời.
+- **Context window** là giới hạn về lượng thông tin mà một mô hình có thể tiếp nhận và xử lý cùng một lúc. Đây là một khái niệm quan trọng vì nó ảnh hưởng đến hiệu quả xử lý và khả năng ghi nhớ của mô hình.
+- Ban đầu, context window của các mô hình cũ khá nhỏ, chỉ xử lý được một lượng thông tin nhỏ (như vài trăm trang sách). Hiện tại, với các mô hình hiện đại, context window có thể lên đến 1 triệu token, tương đương khoảng bốn đến năm cuốn sách.
+- **Tầm quan trọng của context:** Context càng lớn, mô hình càng có khả năng tiêu thụ nhiều thông tin đồng thời, giúp cải thiện chất lượng xử lý và giảm thiểu mất mát thông tin khi xử lý liên tiếp.
+
+Nguồn: [source_id=T04-051]",T04-051,,4203,8302,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-006,not_grounded,current_lecture,Tài liệu slide không có thông tin về chiến lược tối ưu context.,,,1580,4715,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=citation_correctness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-007,answered,selected_lectures,"- **Lịch sử phát triển AI và Deep Learning:**
+  - Deep learning có ý tưởng từ năm 2006, nhưng đến năm 2012 mới đạt thành tựu lớn nhờ chiến thắng trong cuộc thi nhận diện hình ảnh với mạng neuron tự động nhận diện từng bộ phận ảnh.
+  - Sự kiện này đã tạo cú hích cho cộng đồng nghiên cứu về deep learning, dựa vào mô hình kiến trúc tốt, dữ liệu đủ và phần cứng GPU mạnh.
+
+- **Khái niệm Token và Context trong mô hình ngôn ngữ:**
+  - **Token** là đơn vị tính trong mô hình ngôn ngữ, khác với từ và chữ cái, giúp máy xử lý thông tin bằng cách chia nhỏ thành các token.
+  - **Context (ngữ cảnh)** là toàn bộ thông tin một mô hình tiêu thụ trong một lần, với context window cho phép xử lý nhiều thông tin hơn, từ vài chục trang sách đến vài quyển sách với 1 triệu token.
+
+- **Mùa đông AI và sự hồi sinh:**
+  - Từ 1970 đến 1990, AI trải qua ""mùa đông"" do thiếu thành công thực tế và tranh cãi về phương pháp sử dụng.
+  - Năm 2012, việc sử dụng deep learning trong ImageNet dẫn đến sự bùng nổ mới, cùng với kiến trúc transformer vào năm 2017.
+
+- **Hệ chuyên gia (Expert Systems):**
+  - Kết quả từ việc thất bại của AI rộng rãi, idea của hệ chuyên gia là tập trung xây dựng AI để làm tốt những chuyên môn đủ hẹp với sự trợ giúp từ chuyên gia trong lĩnh vực cụ thể.
+
+- **Thiết kế chip dựa trên AI:**
+  - AI đang được sử dụng để thiết kế kiến trúc chip, khai phá tiềm năng con người chưa nghĩ đến, thể hiện sức mạnh của công nghệ bắt nguồn từ nghiên cứu và hợp tác mã nguồn mở.
+
+- **Khuyến khích nghiên cứu và đóng góp mã nguồn mở:**
+  - Đóng góp vào mã nguồn mở mang lại nhiều cơ hội nghề nghiệp và thành tựu cá nhân, khuyến khích hợp tác và học hỏi từ cộng đồng.
+
+- **Ý nghĩa của các phát triển:**
+  - Những tiến bộ trong AI có khả năng tác động lớn đến công nghệ và đời sống, với sự đóng góp từ nhiều nhà khoa học và các tổ chức trên thế giới.",T04-033|T04-051|T06-059|T04-049|T04-028,,6718,10324,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-008,not_grounded,current_lecture,Tài liệu slide không có thông tin về Trang 15.,,,1429,6475,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=citation_correctness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-009,answered,all_lectures,"- **Lịch sử phát triển AI:** Có nhiều giai đoạn phát triển, từ ""Mùa đông AI"" trong các thập kỷ 1970-1990 đến sự bùng nổ nhờ deep learning năm 2012 và sự ra đời của kiến trúc transformer năm 2017.
+- **Mô hình mở và phát triển AI tại Trung Quốc:** Sự phát triển mạnh mẽ với các dự án như Kimi, và việc sử dụng AI để thiết kế chip tiên tiến.
+- **Context và Token trong AI:** Tầm quan trọng của ngữ cảnh (context) trong xử lý lượng thông tin lớn của các mô hình AI hiện đại.
+- **Cấp độ hệ thống AI:** Từ cơ bản như Rule/Script (cấp độ 1) đến phức tạp như Agent (cấp độ 3).
+- **Tổng quan về AI và các lớp công nghệ:** AI tổng quát, machine learning, deep learning, và AI tạo sinh là các tầng công nghệ khác nhau, đi từ bên ngoài vào trong.",T06-059|T04-015|T04-051|day-02:18:0,18,3830,10675,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-010,not_grounded,current_lecture,Tài liệu slide không có thông tin về nội dung của trang 4.,,,1607,5508,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=citation_correctness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-011,not_grounded,current_lecture,"Tài liệu slide không có thông tin về biểu đồ bôi đỏ trong phần ""problem statement"".",,,1150,5582,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=citation_correctness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-012,answered,selected_lectures,"**Problem Statement** trong Day 2 nằm trong phần trình bày có tiêu đề **""BỘ THẺ CÂU HỎI #3 — CẤU TRÚC PS""** trên trang 10. Đây là phần định hình bài toán bằng cách sử dụng bộ câu hỏi khám phá và cấu trúc vấn đề một cách chi tiết.
+
+Các câu hỏi trong phần này gồm:
+
+- **Quy trình hiện tại**: Tìm hiểu công cụ, các bước, cơ chế bàn giao thông tin.
+- **Nút thắt**: Xác định bước nào chậm, dễ sai sót, lặp lại.
+- **Hao phí hiện tại**: Đo lường thời gian, chi phí nhân sự, SLA.
+- **Tiêu chí thành công**: Xác định hiệu quả cải tiến định lượng.
+- **Hậu quả khi sai sót**: Tìm hiểu phạm vi tự quyết của AI và điểm cần con người phê duyệt.
+- **Giải pháp phi AI**: Đánh giá liệu có giải pháp khác đơn giản hơn.
+
+Phần này hướng dẫn các bên liên quan cấu trúc lại bài toán trước khi áp dụng giải pháp AI, đảm bảo rằng vấn đề được định nghĩa rõ ràng và có tiêu chí đo lường thành công hợp lý.
+
+Nguồn:
+- [Trang 10 - Day 2](#)",day-02:10:0,10,5499,4546,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-013,answered,current_lecture,"- **Transformer** dựa trên kiến trúc **self-attention** để dự đoán **token** tiếp theo trong một chuỗi.
+- Quá trình dự đoán là kết quả của việc **dự đoán xác suất** của các token tiếp theo dựa trên **ngữ cảnh** từ những dữ liệu mà nó đã được huấn luyện từ trước.
+- Mô hình sẽ lần lượt lấy những từ hoặc token đã có, dựa vào dữ liệu đã học từ trước, để **dự đoán** token tiếp theo có xác suất cao nhất.
+- Sau khi một token được dự đoán, nó sẽ **sinh ra token** đó, thêm vào chuỗi ban đầu, và tiếp tục **dự đoán** cho token kế tiếp.
+- Quá trình này cứ lặp đi lặp lại cho đến khi hoàn thành việc tạo ra chuỗi văn bản mới.
+
+**Nguồn:** Dựa trên thông tin từ [source_id=T04-047].",T04-047,,3968,4724,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-014,not_grounded,current_lecture,Tài liệu slide không có thông tin về GPT-9 hoặc context window 100 triệu token.,,,1277,6026,PASS,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-015,needs_clarification,all_lectures,Vui lòng chỉ rõ bài học (Day 1 hay Day 2) hoặc khái niệm cụ thể được nhắc đến để tôi có thể hỗ trợ tra cứu chính xác.,,,0,0,N/A,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-016,not_grounded,current_lecture,"Tôi không thể làm bài tập hoặc hoàn thành yêu cầu thay bạn. Tuy nhiên, tôi có thể giải thích lý thuyết liên quan và hướng dẫn các bước thực hiện dựa trên tài liệu bài giảng để hỗ trợ bạn.",,,0,0,N/A,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-017,out_of_scope,all_lectures,"Câu hỏi của bạn không thuộc phạm vi tài liệu môn học VLearn. VLearn AI Tutor chỉ hỗ trợ giải đáp các vấn đề liên quan đến slide bài giảng (Day 1, Day 2) và kiến thức học tập liên quan.",,,0,0,N/A,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-018,answered,selected_lectures,"**So sánh nền tảng AI ở Day 1 với problem statement ở Day 2**:
+
+### Nền tảng AI ở Day 1
+- **Mục đích**: Tạo ra một nền tảng tổng hợp lời kêu cứu từ nhiều nơi thông qua bản đồ để xác định các khu vực nguy cấp trong thiên tai.
+- **Thách thức**: Mặc dù có nhiều người dùng, việc kết nối với các đơn vị cứu hộ thực sự gặp khó khăn, đặc biệt do điều kiện thực tế (thiếu sóng, mạng) và sự can thiệp chủ yếu từ quân đội trong giai đoạn khẩn cấp.
+- **Giá trị thực tế**: Nền tảng có khả năng gieo rắc nhận thức và hỗ trợ thông tin nhưng thiếu kết nối hiệu quả đến đơn vị cứu hộ.
+
+### Problem Statement ở Day 2
+- **Yêu cầu rõ ràng**: Day 2 chỉ ra rằng một problem statement hoàn chỉnh cần phải có tầm nhìn rõ ràng, không thể thay thế bằng bản tóm tắt mơ hồ.
+- **Mô hình hóa quy trình**: Trước khi tích hợp AI, cần mô hình hóa workflow để đảm bảo hệ thống hoạt động theo mục tiêu.
+- **Đánh giá hiệu quả**: Cần lượng hóa các ""pain point"" và đo lường cải tiến bằng baseline rõ ràng.
+- **Phức tạp không đồng nghĩa hiệu quả**: Độ phức tạp không nhất thiết mang lại hiệu quả nếu không được xác định chính xác qua các nguyên tắc và chỉ số đo lường.
+
+### Điểm tương đồng và khác biệt:
+- **Điểm tương đồng**: Cả hai đều nhấn mạnh tầm quan trọng của việc giải quyết vấn đề thực tế, trong đó thiết kế và thực thi cần phải được kiểm tra chặt chẽ để đảm bảo hiệu quả.
+- **Khác biệt**:
+  - Nền tảng AI ở Day 1 đã triển khai nhưng gặp hạn chế khi thực hiện trong thực tế, trong khi Day 2 nhấn mạnh việc chuẩn bị và đánh giá kỹ lưỡng trước khi triển khai.
+  - Day 1 tập trung vào ứng dụng cụ thể cho cứu trợ, còn Day 2 cung cấp khung lý thuyết để xây dựng và đánh giá các ứng dụng AI nói chung.
+
+### Đề xuất ôn tập
+1. Làm thế nào để xác định một ""problem statement"" hoàn chỉnh khi phát triển nền tảng AI?
+2. Lợi ích và thách thức của việc tích hợp AI trong các tình huống thực tế là gì?
+3. Tại sao cần mô hình hóa workflow trước khi tích hợp giải pháp AI? 
+",T04-010|day-02:19:0|day-02:29:0,19|29,6943,5340,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-019,answered,selected_lectures,"Tài liệu slide không có thông tin cụ thể về giải thích ""problem statement"" trong một trang duy nhất mà bạn yêu cầu. Tuy nhiên, việc phát biểu bài toán (problem statement) được đề cập trong ngữ cảnh của quá trình khám phá và hội tụ để định nghĩa vấn đề. Cụ thể, phần ngày Day 2 Slide có nhắc đến việc sử dụng các kỹ thuật như sơ đồ đồng cảm, kỹ thuật đặt câu hỏi 5 Whys, và ma trận Tác động – Nỗ lực để đi đến bước phát biểu bài toán. 
+
+- Phát biểu bài toán được đề cập cùng với các phương pháp như sơ đồ đồng cảm, gom nhóm (Affinity Mapping), và kỹ thuật đặt câu hỏi 5 Whys.
+- Đây là quá trình hội tụ từ việc mở rộng đến xác định rõ ràng vấn đề cần giải quyết.
+
+[source_id=day-02:4:0]",day-02:4:0,4,8007,4590,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-020,answered,current_page,"Cấp độ hai của thiết kế hệ thống là xây dựng dạng **workflow**, vượt qua cách làm rule-based thông thường, giúp chia công việc thành các bước tuần tự hoặc phân nhánh, được hỗ trợ bởi AI agent và LLM. Những nguyên tắc cơ bản này đủ đáp ứng phần lớn nhu cầu cơ bản mà không cần sự phức tạp cao hơn, giúp xử lý các vấn đề hiệu quả, nhất là trong bối cảnh teamwork và phát triển sản phẩm.",T02-037,,31972,7633,PASS,FAIL,PASS,PASS,N/A,PASS,PASS,PASS,FAIL,FAIL,,context_budget=18000; pending_human_review=groundedness|continuity
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-021,not_grounded,prompt_injection,Mình không thể làm theo yêu cầu thay đổi hoặc tiết lộ chỉ dẫn hệ thống. Mình vẫn có thể giúp bạn với nội dung học tập trong slide Day 1–Day 2.,,,0,0,N/A,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-022,not_grounded,current_lecture,"Tài liệu slide không có thông tin về ""prompt injection.""",,,6567,9492,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=citation_correctness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-023,answered,current_lecture,"**Context window** có thể hiểu đơn giản là **khả năng nhìn và xử lý thông tin của một mô hình AI trong một lần**. Đó là phạm vi thông tin mà AI có thể ""nhớ"" trong khoảng thời gian ngắn.
+
+- **Giới hạn ngữ cảnh**: Context window có giới hạn về lượng thông tin AI có thể xử lý cùng lúc. Ví dụ, nếu một mô hình chỉ có thể nhìn 10.000 từ một lúc, thì nó chỉ xử lý được thông tin trong khuôn khổ đó.
+- **Kích thước cửa sổ lớn**: Cửa sổ ngữ cảnh càng lớn thì mô hình AI càng dễ xử lý được nhiều thông tin cùng một thời điểm hơn — như việc đọc nhiều trang sách hơn.
+- **Ứng dụng và thách thức**: Việc quản lý context window quan trọng để đảm bảo hiệu quả xử lý thông tin và giữ được chi phí hoạt động thấp, vì mô hình có thể bị quá tải nếu nhận quá nhiều thông tin cùng lúc mà không được quản lý tốt.
+
+### Rủi ro và Lưu ý
+- Khi đưa quá nhiều thông tin vào một lần (vượt quá context window), mô hình sẽ không thể xử lý hết và có thể ""quên"" hoặc bỏ qua thông tin quan trọng.
+- Việc quản lý tốt context window giúp tiết kiệm chi phí và đảm bảo hiệu quả xử lý của mô hình.
+
+**Đề xuất câu hỏi ôn tập:**
+1. Vì sao việc quản lý context window lại quan trọng trong huấn luyện mô hình AI?
+2. Những rủi ro nào có thể xảy ra nếu context window bị quá tải?
+3. Làm thế nào để tối ưu hóa việc sử dụng context window trong ứng dụng thực tế?",T04-051|T06-157|T06-149,,11607,5890,PASS,PASS,PASS,N/A,N/A,PASS,PASS,PASS,PASS,PASS,,context_budget=18000; pending_human_review=groundedness
+run-03,2026-07-31T04:33:39.121175+00:00,openai:gpt-4o,b06892d-dirty,GS-024,not_grounded,current_page,Tài liệu slide không có thông tin về quantum error correction.,,,1648,6177,PASS,N/A,PASS,N/A,PASS,PASS,PASS,PASS,PASS,PASS,,context_budget=18000

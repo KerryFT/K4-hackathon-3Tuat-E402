@@ -29,21 +29,31 @@ class InMemoryVectorStore:
             score = len(query_terms & content_terms) / max(len(query_terms), 1)
             if score:
                 matches.append(chunk.model_copy(update={"score": score}))
+
+        if request.page is not None:
+            page_matches = [c for c in scoped if c.page == request.page]
+            if page_matches:
+                for pm in page_matches:
+                    if not any(m.source_id == pm.source_id for m in matches):
+                        matches.append(pm.model_copy(update={"score": 0.5}))
+
         if matches:
             ranked = sorted(matches, key=lambda item: item.score, reverse=True)
-            if request.diversify_lectures:
+            if request.diversify_lectures and request.lecture_ids:
                 diverse: list[SourceChunk] = []
-                seen_lectures: set[str] = set()
-                for chunk in ranked:
-                    if chunk.lecture_id not in seen_lectures:
-                        diverse.append(chunk)
-                        seen_lectures.add(chunk.lecture_id)
-                selected_ids = {chunk.source_id for chunk in diverse}
-                diverse.extend(
-                    chunk for chunk in ranked if chunk.source_id not in selected_ids
-                )
+                for lec_id in request.lecture_ids:
+                    lec_chunks = [c for c in ranked if c.lecture_id == lec_id]
+                    if not lec_chunks and request.allow_scope_fallback:
+                        lec_chunks = [c for c in scoped if c.lecture_id == lec_id]
+                    diverse.extend(lec_chunks[:3])
+                selected_ids = {c.source_id for c in diverse}
+                for c in ranked:
+                    if c.source_id not in selected_ids:
+                        diverse.append(c)
+                        selected_ids.add(c.source_id)
                 ranked = diverse
             return ranked[: request.top_k]
+
         if request.allow_scope_fallback:
             if request.diversify_lectures:
                 grouped: dict[str, list[SourceChunk]] = {}

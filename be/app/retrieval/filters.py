@@ -9,5 +9,6 @@ def is_in_scope(chunk: SourceChunk, request: SearchRequest) -> bool:
     if request.lecture_ids and chunk.lecture_id not in request.lecture_ids:
         return False
     if request.scope == "current_page" and request.page is not None:
-        return chunk.page == request.page
+        if chunk.page is not None and chunk.page != request.page:
+            return False
     return True
