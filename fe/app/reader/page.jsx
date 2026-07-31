@@ -39,10 +39,112 @@ const COURSE_DOCUMENTS = [
   }
 ];
 
+function PdfSlideViewer({ pdfUrl, currentPage, zoomLevel = 100, userEmail }) {
+  const canvasRef = useRef(null);
+  const [pdfDoc, setPdfDoc] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [renderError, setRenderError] = useState(false);
+
+  useEffect(() => {
+    if (!pdfUrl) return;
+    setLoading(true);
+    setRenderError(false);
+
+    const initPdfJs = () => {
+      if (!window.pdfjsLib) {
+        setRenderError(true);
+        setLoading(false);
+        return;
+      }
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      window.pdfjsLib
+        .getDocument(pdfUrl)
+        .promise.then(doc => {
+          setPdfDoc(doc);
+          setLoading(false);
+        })
+        .catch(() => {
+          setRenderError(true);
+          setLoading(false);
+        });
+    };
+
+    if (!window.pdfjsLib) {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = initPdfJs;
+      script.onerror = () => {
+        setRenderError(true);
+        setLoading(false);
+      };
+      document.head.appendChild(script);
+    } else {
+      initPdfJs();
+    }
+  }, [pdfUrl]);
+
+  useEffect(() => {
+    if (!pdfDoc || !canvasRef.current) return;
+    const pageNum = Math.min(Math.max(1, currentPage), pdfDoc.numPages);
+
+    pdfDoc.getPage(pageNum).then(page => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const targetWidth = Math.min(typeof window !== 'undefined' ? window.innerWidth - 360 : 800, 820) * (zoomLevel / 100);
+      const baseViewport = page.getViewport({ scale: 1.0 });
+      const scale = targetWidth / baseViewport.width;
+      const viewport = page.getViewport({ scale: Math.max(0.5, scale) });
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      page.render({
+        canvasContext: ctx,
+        viewport: viewport
+      });
+    });
+  }, [pdfDoc, currentPage, zoomLevel]);
+
+  if (renderError) {
+    return (
+      <div className="w-full h-full min-h-[500px] bg-white rounded-2xl overflow-hidden relative border-0 flex items-center justify-center">
+        <iframe
+          key={`${pdfUrl}-p${currentPage}`}
+          src={`${pdfUrl}#page=${currentPage}&toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
+          className="w-full h-full min-h-[500px] border-0 bg-white rounded-2xl"
+          style={{ overflow: 'hidden' }}
+          scrolling="no"
+          title="PDF Slide Page"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-full flex items-center justify-center relative overflow-hidden bg-slate-900 rounded-2xl min-h-[500px] select-none">
+      {loading && (
+        <div className="text-slate-300 text-xs font-semibold animate-pulse">
+          Đang tải slide trang {currentPage}...
+        </div>
+      )}
+      <div className="relative shadow-2xl rounded-xl overflow-hidden bg-white max-w-full my-auto border border-slate-200 dark:border-slate-800">
+        <canvas ref={canvasRef} className="block max-w-full h-auto rounded-xl" />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 transform -rotate-12 select-none font-black text-sm md:text-base tracking-widest text-slate-900 whitespace-nowrap">
+          {userEmail || '26AI.TRUONGVH@VINUNI.EDU.VN'}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SlideReaderPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { lang } = useApp();
+  const { lang, toggleLang, dark, toggleDark, user } = useApp();
   const isVi = lang === 'VI';
 
   // Language Dictionary
@@ -55,7 +157,7 @@ export default function SlideReaderPage() {
     pen: isVi ? 'Bút' : 'Pen',
     highlight: isVi ? 'Highlight' : 'Highlight',
     page: isVi ? 'Trang' : 'Page',
-    note: isVi ? 'note' : 'notes',
+    note: isVi ? 'ghi chú' : 'notes',
     addNote: isVi ? 'Thêm ghi chú' : 'Add Note',
     downloadDoc: isVi ? 'Tải xuống tài liệu' : 'Download Document',
     undoDraw: isVi ? 'Hoàn tác nét vẽ' : 'Undo Line',
@@ -125,6 +227,19 @@ export default function SlideReaderPage() {
     setTimeout(() => {
       setIsTransitioning(false);
     }, 150);
+  }
+
+  // Handle Download File
+  function handleDownloadFile(fileToDownload) {
+    const targetFile = fileToDownload || activeFile;
+    if (!targetFile || !targetFile.pdfUrl) return;
+
+    const link = document.createElement('a');
+    link.href = targetFile.pdfUrl;
+    link.download = targetFile.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   // Handle Canvas Drawings Redraw
@@ -256,7 +371,7 @@ export default function SlideReaderPage() {
 
   return (
     <div className="h-screen flex flex-col bg-[#F1F5F9] dark:bg-[#0F172A] overflow-hidden transition-colors duration-200">
-      {/* Top Header Bar */}
+      {/* Top Header Bar with Language & Dark Mode Controls */}
       <header className="bg-white dark:bg-[#1E293B] border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between z-30 transition-colors">
         <div className="flex items-center gap-3">
           <button
@@ -273,6 +388,28 @@ export default function SlideReaderPage() {
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <h1 className="text-xs font-extrabold text-slate-800 dark:text-slate-100">{activeFile.title || activeFile.name}</h1>
           </div>
+        </div>
+
+        {/* Right Header Action Icons: Language Toggle (VI/EN) & Dark Mode Toggle (☀️/🌙) */}
+        <div className="flex items-center gap-2.5">
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLang}
+            className="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700 flex items-center gap-1 cursor-pointer"
+            title={isVi ? 'Đổi sang Tiếng Anh (English)' : 'Đổi sang Tiếng Việt (Vietnamese)'}
+          >
+            <span>🌐</span>
+            <span>{lang === 'VI' ? 'VI' : 'EN'}</span>
+          </button>
+
+          {/* Dark Mode Toggle Button */}
+          <button
+            onClick={toggleDark}
+            className="p-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700 flex items-center justify-center w-8 h-8 cursor-pointer"
+            title={dark ? 'Chuyển sang Chế độ Sáng (Light Mode)' : 'Chuyển sang Chế độ Tối (Dark Mode)'}
+          >
+            <span>{dark ? '☀️' : '🌙'}</span>
+          </button>
         </div>
       </header>
 
@@ -346,7 +483,7 @@ export default function SlideReaderPage() {
                           <div
                             key={file.id}
                             onClick={() => selectFile(group, file)}
-                            className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between ${
+                            className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between group/item ${
                               isActive
                                 ? 'border-[#0B3B60] dark:border-[#38BDF8] bg-blue-50/70 dark:bg-blue-950/50 shadow-xs'
                                 : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50'
@@ -361,11 +498,27 @@ export default function SlideReaderPage() {
                                 <div className="text-[10px] text-slate-400 dark:text-slate-500">{file.pages} {t.pages}</div>
                               </div>
                             </div>
-                            {isActive && (
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[#0B3B60] dark:text-[#38BDF8]">
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                            )}
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDownloadFile(file);
+                                }}
+                                className="p-1 rounded-md text-slate-400 hover:text-[#0B3B60] dark:hover:text-[#38BDF8] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all opacity-0 group-hover/item:opacity-100"
+                                title={`Tải ${file.name}`}
+                              >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                  <polyline points="7 10 12 15 17 10" />
+                                  <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                              </button>
+                              {isActive && (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[#0B3B60] dark:text-[#38BDF8]">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
+                            </div>
                           </div>
                         );
                       })}
@@ -455,14 +608,14 @@ export default function SlideReaderPage() {
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setZoomLevel(prev => Math.max(50, prev - 15))}
-                  className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold"
+                  className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold cursor-pointer"
                 >
                   -
                 </button>
                 <span className="text-xs font-bold w-10 text-center">{zoomLevel}%</span>
                 <button
                   onClick={() => setZoomLevel(prev => Math.min(200, prev + 15))}
-                  className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold"
+                  className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold cursor-pointer"
                 >
                   +
                 </button>
@@ -474,19 +627,14 @@ export default function SlideReaderPage() {
               <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                 <button
                   onClick={() => setNotes(prev => [...prev, { id: Date.now(), page: currentPage, text: isVi ? 'Ghi chú mới' : 'New note' }])}
-                  className="hover:text-slate-900 dark:hover:text-white p-1 text-base font-bold"
+                  className="hover:text-slate-900 dark:hover:text-white p-1 text-base font-bold cursor-pointer"
                   title={t.addNote}
                 >
                   +
                 </button>
                 <button
-                  onClick={() => {
-                    const a = document.createElement('a');
-                    a.href = activeFile.pdfUrl;
-                    a.download = activeFile.name;
-                    a.click();
-                  }}
-                  className="hover:text-slate-900 dark:hover:text-white p-1"
+                  onClick={() => handleDownloadFile(activeFile)}
+                  className="hover:text-slate-900 dark:hover:text-white p-1 cursor-pointer"
                   title={t.downloadDoc}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -497,7 +645,7 @@ export default function SlideReaderPage() {
                 </button>
                 <button
                   onClick={() => setDrawings(prev => prev.slice(0, -1))}
-                  className="hover:text-slate-900 dark:hover:text-white p-1"
+                  className="hover:text-slate-900 dark:hover:text-white p-1 cursor-pointer"
                   title={t.undoDraw}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -507,7 +655,7 @@ export default function SlideReaderPage() {
                 </button>
                 <button
                   onClick={() => setDrawings([])}
-                  className="hover:text-red-500 p-1"
+                  className="hover:text-red-500 p-1 cursor-pointer"
                   title={t.clearAll}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -539,7 +687,7 @@ export default function SlideReaderPage() {
                 </svg>
               </button>
 
-              {/* Center Real Document Viewer Container */}
+              {/* Center Real Document Viewer Container (Zero Scrollbars Single Slide Card) */}
               <div
                 className={`bg-white dark:bg-[#1E293B] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 relative flex flex-col transition-all duration-300 transform ${
                   isTransitioning ? 'opacity-30 scale-98 translate-y-1' : 'opacity-100 scale-100 translate-y-0'
@@ -555,13 +703,13 @@ export default function SlideReaderPage() {
                   <span className="font-bold text-slate-700 dark:text-slate-200">{activeFile.name}</span>
                 </div>
 
-                {/* Real Native PDF Viewer Container Page-by-Page */}
-                <div className="flex-1 rounded-2xl overflow-hidden bg-white relative shadow-inner border border-slate-200 dark:border-slate-800 flex flex-col min-h-[500px]">
-                  <iframe
-                    key={`${activeFile.pdfUrl}-page-${currentPage}`}
-                    src={`${activeFile.pdfUrl}#page=${currentPage}&toolbar=0&navpanes=0`}
-                    className="w-full h-full min-h-[500px] border-0 bg-white rounded-2xl"
-                    title={activeFile.name}
+                {/* Real Native PDF Viewer Container Page-by-Page with ZERO scrollbar */}
+                <div className="flex-1 rounded-2xl overflow-hidden bg-[#3A4F41] relative shadow-inner border border-slate-200 dark:border-slate-800 flex flex-col min-h-[500px]">
+                  <PdfSlideViewer
+                    pdfUrl={activeFile.pdfUrl}
+                    currentPage={currentPage}
+                    zoomLevel={zoomLevel}
+                    userEmail={user?.email}
                   />
 
                   {/* Canvas Drawing Overlay Layer */}
@@ -649,7 +797,7 @@ export default function SlideReaderPage() {
               </div>
               <button
                 onClick={() => setAiDrawerOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 font-bold"
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -685,12 +833,12 @@ export default function SlideReaderPage() {
                 value={inputMsg}
                 onChange={e => setInputMsg(e.target.value)}
                 placeholder={t.aiPlaceholder}
-                className="flex-1 px-3 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-[#0B3B60]"
+                className="flex-1 px-3 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:border-[#0B3B60]"
               />
               <button
                 type="submit"
                 disabled={!inputMsg.trim() || isLoading}
-                className="px-4 py-2 bg-[#0B3B60] text-white rounded-xl text-xs font-bold disabled:opacity-50"
+                className="px-4 py-2 bg-[#0B3B60] text-white rounded-xl text-xs font-bold disabled:opacity-50 cursor-pointer"
               >
                 {t.send}
               </button>
